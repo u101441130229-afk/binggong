@@ -366,7 +366,16 @@ export default function ProfileResultView({ profile, aiAnalysis, learnedCases = 
   const welcomeText = aiAnalysis || fallbackWelcome[t.code] || "你的画像生成了，让我们开始吧。";
   const [typedWelcome, welcomeDone] = useTyping(welcomeText, 18, true);
 
-  const pathMap = { SOLID: ["beidou","df41","j20","fujian","tank99a"], PERSIST: ["df41","beidou","j20","tank99a","fujian"], VALUE: ["tank99a","j20","beidou","fujian","df41"], COLLAB: ["fujian","beidou","tank99a","j20","df41"], EXPLORE: ["j20","beidou","tank99a","fujian","df41"], RESOURCE: ["beidou","tank99a","fujian","j20","df41"], GROW: ["tank99a","beidou","j20","fujian","df41"], GUIDE: ["beidou","j20","fujian","tank99a","df41"] };
+  const pathMap = {
+    SOLID:   ["beidou",   "tiangong", "fujian",  "y20",     "tank99a", "j20",      "df41",  "df17"],
+    PERSIST: ["df41",     "tank99a",  "y20",     "beidou",  "fujian",  "tiangong", "j20",   "df17"],
+    VALUE:   ["j20",      "df17",     "tank99a", "beidou",  "df41",    "fujian",   "y20",   "tiangong"],
+    COLLAB:  ["fujian",   "y20",      "tiangong","beidou",  "tank99a", "j20",      "df41",  "df17"],
+    EXPLORE: ["tank99a",  "j20",      "df17",    "beidou",  "fujian",  "df41",     "y20",   "tiangong"],
+    RESOURCE:["df17",     "beidou",   "tank99a", "j20",     "tiangong","fujian",   "df41",  "y20"],
+    GROW:    ["tiangong", "tank99a",  "beidou",  "fujian",  "y20",     "j20",      "df17",  "df41"],
+    GUIDE:   ["y20",      "fujian",   "df41",    "tiangong","beidou",  "tank99a",  "j20",   "df17"],
+  };
   const path = pathMap[t.code] || CASE_ORDER;
 
   const lowDims = DIMS.filter(d => profile.lvls[d] === "L");
