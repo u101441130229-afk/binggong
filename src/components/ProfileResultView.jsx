@@ -174,7 +174,7 @@ function CozeChat({ profile, onClose }) {
           </div>
         )}
         <div style={{ padding: "12px 18px 20px", borderTop: "1px solid rgba(51,65,85,0.3)", flexShrink: 0, display: "flex", gap: 10 }}>
-          <input value={input} onChange={function (e) { setInput(e.target.value); }} onKeyDown={function (e) { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(input); } }} onFocus={function () { setTimeout(function () { if (scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight; }, 300); }} placeholder="问小备任何兵工思政问题…" style={{ flex: 1, padding: "10px 14px", borderRadius: 12, fontSize: 13, background: "rgba(15,23,42,0.8)", border: "1px solid rgba(51,65,85,0.5)", color: text1, outline: "none" }} />
+          <input value={input} onChange={function (e) { setInput(e.target.value); }} onKeyDown={function (e) { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(input); } }} onFocus={function () { setTimeout(function () { if (scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight; }, 300); }} placeholder="问小备任何兵工思政问题…" style={{ flex: 1, padding: "10px 14px", borderRadius: 12, fontSize: 16, background: "rgba(15,23,42,0.8)", border: "1px solid rgba(51,65,85,0.5)", color: text1, outline: "none" }} />
           <button onClick={function () { sendMessage(input); }} disabled={loading || !input.trim()} style={{ padding: "10px 16px", borderRadius: 12, fontSize: 13, fontWeight: 700, background: loading || !input.trim() ? "rgba(51,65,85,0.4)" : "linear-gradient(135deg,#3b82f6,#06b6d4)", border: "none", color: loading || !input.trim() ? gray2 : "#fff", cursor: loading || !input.trim() ? "not-allowed" : "pointer" }}>发送</button>
         </div>
       </div>
