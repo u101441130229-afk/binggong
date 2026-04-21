@@ -414,7 +414,7 @@ export default function ProfileResultView({ profile, aiAnalysis, learnedCases = 
           </div>
         </div>
 
-        {showChat && <XiaoBeiChat profile={profile} onClose={function () { setShowChat(false); }} />}
+        {showChat && <CozeChat profile={profile} onClose={function () { setShowChat(false); }} />}
         {showShare && <ShareCard profile={profile} onClose={function () { setShowShare(false); }} />}
 
         {/* 学习进度 */}
