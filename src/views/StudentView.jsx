@@ -27,7 +27,13 @@ export default function StudentView() {
   });
   const [learnedCases, setLearnedCases] = useState([]);
   const [openChatOnReturn, setOpenChatOnReturn] = useState(false);
-  const [showDailyQ, setShowDailyQ] = useState(true);
+  const [showDailyQ, setShowDailyQ] = useState(function() {
+    try {
+      const last = localStorage.getItem("bgzh_dailyq_date");
+      const today = new Date().toLocaleDateString("zh-CN");
+      return last !== today; // 今天没看过才弹
+    } catch(e) { return true; }
+  });
   const [aiAnalysis, setAiAnalysis] = useState(null);
   const [showHistory, setShowHistory] = useState(false);
 
@@ -185,7 +191,10 @@ ${p.matchInfo}
   if (stage === "survey") return (
     <div style={{ position: "relative", height: "100%" }}>
       <SurveyView onComplete={handleSurveyComplete} onSkip={handleSkip} />
-      {showDailyQ && <DailyQuestion onClose={function () { setShowDailyQ(false); }} />}
+      {showDailyQ && <DailyQuestion onClose={function () {
+        setShowDailyQ(false);
+        try { localStorage.setItem("bgzh_dailyq_date", new Date().toLocaleDateString("zh-CN")); } catch(e) {}
+      }} />}
 
       {/* 历史画像按钮 */}
       {historyProfiles.length > 0 && !showDailyQ && (
@@ -287,6 +296,7 @@ ${p.matchInfo}
       onBack={function () { setStage("profile"); }}
       onSwitchCase={function (id) { setCurrentCase(id); }}
       onOpenChat={function () { setOpenChatOnReturn(true); setStage("profile"); }}
+      onRetake={function () { setProfile(null); setAiAnalysis(null); setStage("survey"); }}
     />
   );
 

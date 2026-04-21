@@ -249,7 +249,7 @@ function KnowledgeGraph({ caseId, onClose }) {
 // ============================================================
 // CaseStudyView - 案例智能学习页
 // ============================================================
-export default function CaseStudyView({ caseId, learnedCases = [], onComplete, onBack, onSwitchCase, onOpenChat }) {
+export default function CaseStudyView({ caseId, learnedCases = [], onComplete, onBack, onSwitchCase, onOpenChat, onRetake }) {
   const cur = CASES[caseId];
   const [phase, setPhase] = useState(1);
   const [agentStep, setAgentStep] = useState(0);
@@ -460,7 +460,7 @@ export default function CaseStudyView({ caseId, learnedCases = [], onComplete, o
                       </div>
                       <div style={{ display: "flex", gap: 8 }}>
                         <button onClick={onBack} style={{ flex: 1, padding: "11px", borderRadius: 10, background: "rgba(6,182,212,0.15)", border: "1px solid rgba(6,182,212,0.3)", color: cyan, fontSize: 13, cursor: "pointer", fontWeight: 700 }}>继续学习 →</button>
-                        <button onClick={function () { if (onOpenChat) onOpenChat(); else onBack(); }} style={{ padding: "11px 16px", borderRadius: 10, background: "rgba(34,197,94,0.1)", border: "1px solid rgba(34,197,94,0.2)", color: green, fontSize: 13, cursor: "pointer" }}>和小备聊聊</button>
+                        <button onClick={function() { if (onRetake) onRetake(); else onBack(); }} style={{ padding: "11px 16px", borderRadius: 10, background: "rgba(139,92,246,0.1)", border: "1px solid rgba(139,92,246,0.2)", color: "#a855f7", fontSize: 13, cursor: "pointer", fontWeight: 700 }}>🔁 重新测评</button>
                       </div>
                     </div>
                   </div>

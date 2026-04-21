@@ -142,7 +142,7 @@ function CozeChat({ profile, onClose }) {
           <XiaoBei size={36} speaking={loading} />
           <div style={{ flex: 1 }}>
             <div style={{ fontSize: 14, fontWeight: 700, color: text1 }}>小备 · 兵工思政智能体</div>
-            <div style={{ fontSize: 11, color: loading ? yellow : green }}>{loading ? "小备思考中…" : "● 已连接 · Coze Bot"}</div>
+            <div style={{ fontSize: 11, color: loading ? yellow : green }}>{loading ? "小备思考中…" : "● 已连接 · DeepSeek驱动"}</div>
           </div>
           <div style={{ fontSize: 10, color: gray2, padding: "3px 8px", background: "rgba(6,182,212,0.08)", border: "1px solid rgba(6,182,212,0.2)", borderRadius: 999 }}>{profile.final.cn}画像</div>
           <button onClick={onClose} style={{ background: "transparent", border: "none", color: gray2, fontSize: 20, cursor: "pointer", padding: "4px 8px" }}>✕</button>
@@ -407,9 +407,8 @@ export default function ProfileResultView({ profile, aiAnalysis, learnedCases = 
             <div style={{ fontSize: 13.5, color: text2, lineHeight: 1.85 }}>{t.desc}</div>
             {profile.matchInfo && (<div style={{ marginTop: 14, display: "inline-flex", alignItems: "center", gap: 8, padding: "6px 12px", background: "rgba(15,23,42,0.6)", border: "1px solid " + t.color + "44", borderRadius: 999, fontSize: 11, color: t.color, fontWeight: 600 }}>{profile.matchInfo}</div>)}
             <div style={{ display: "flex", gap: 8, marginTop: 14 }}>
-              <button onClick={function () { setShowChat(true); }} style={{ flex: 1, display: "flex", alignItems: "center", gap: 8, padding: "10px 14px", borderRadius: 12, fontSize: 13, fontWeight: 700, background: "linear-gradient(135deg,rgba(6,182,212,0.2),rgba(59,130,246,0.15))", border: "1px solid rgba(6,182,212,0.4)", color: cyan, cursor: "pointer", justifyContent: "center" }}><XiaoBei size={22} speaking={false} />和小备聊聊 →</button>
-              <button onClick={function () { setShowShare(true); }} style={{ padding: "10px 14px", borderRadius: 12, fontSize: 13, fontWeight: 700, background: "rgba(234,179,8,0.1)", border: "1px solid rgba(234,179,8,0.3)", color: yellow, cursor: "pointer", display: "flex", alignItems: "center", gap: 6, whiteSpace: "nowrap" }}>🪪 生成画像卡片</button>
-              <button onClick={function () { if (syncDone || syncing) return; setSyncing(true); setTimeout(function () { setSyncing(false); setSyncDone(true); }, 1500); }} style={{ padding: "10px 14px", borderRadius: 12, fontSize: 13, fontWeight: 700, background: syncDone ? "rgba(34,197,94,0.1)" : "rgba(139,92,246,0.1)", border: "1px solid " + (syncDone ? "rgba(34,197,94,0.3)" : "rgba(139,92,246,0.3)"), color: syncDone ? green : purple, cursor: syncDone ? "default" : "pointer", display: "flex", alignItems: "center", gap: 6, whiteSpace: "nowrap" }}>{syncing ? <span style={{ animation: "pulse 0.6s infinite" }}>⏳</span> : syncDone ? "✓" : "📤"}{syncing ? "同步中…" : syncDone ? "已同步给老师" : "同步给老师"}</button>
+              <button onClick={function () { setShowShare(true); }} style={{ flex: 1, padding: "10px 14px", borderRadius: 12, fontSize: 13, fontWeight: 700, background: "rgba(234,179,8,0.1)", border: "1px solid rgba(234,179,8,0.3)", color: yellow, cursor: "pointer", display: "flex", alignItems: "center", gap: 6, justifyContent: "center" }}>🪪 生成画像卡片</button>
+              <button onClick={function () { if (syncDone || syncing) return; setSyncing(true); setTimeout(function () { setSyncing(false); setSyncDone(true); }, 1500); }} style={{ flex: 1, padding: "10px 14px", borderRadius: 12, fontSize: 13, fontWeight: 700, background: syncDone ? "rgba(34,197,94,0.1)" : "rgba(139,92,246,0.1)", border: "1px solid " + (syncDone ? "rgba(34,197,94,0.3)" : "rgba(139,92,246,0.3)"), color: syncDone ? green : purple, cursor: syncDone ? "default" : "pointer", display: "flex", alignItems: "center", gap: 6, justifyContent: "center", whiteSpace: "nowrap" }}>{syncing ? <span style={{ animation: "pulse 0.6s infinite" }}>⏳</span> : syncDone ? "✓" : "📤"}{syncing ? "同步中…" : syncDone ? "已同步给老师" : "同步给老师"}</button>
             </div>
           </div>
         </div>
