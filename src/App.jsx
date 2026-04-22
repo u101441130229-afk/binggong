@@ -9,6 +9,7 @@ import XiaoBei from "./components/XiaoBei.jsx";
 import StudentView from "./views/StudentView.jsx";
 import TeacherView from "./views/TeacherView.jsx";
 import SchoolView from "./views/SchoolView.jsx";
+import { Analytics } from "@vercel/analytics/react";
 
 // ============================================================
 // LoginPage - 星空登录页
@@ -592,6 +593,7 @@ export default function App() {
 
       {/* 全局悬浮小备 */}
       <XiaoBeiFloat role={role} />
+      <Analytics />
     </div>
   );
 }
