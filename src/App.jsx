@@ -56,7 +56,7 @@ function LoginPage({ onLogin }) {
           "Authorization": "Bearer sk-47291327d13c4388abc42a898e0af76c"
         },
         body: JSON.stringify({
-          model: "qwen-vl-plus",
+          model: "qwen-vl-max-latest",
           messages: [{
             role: "user",
             content: [
@@ -275,7 +275,7 @@ function LoginPage({ onLogin }) {
               <XiaoBei size={36} speaking={false} />
               <div>
                 <div style={{ fontSize: 13, fontWeight: 700, color: cyan }}>通义千问VL · 识别结果</div>
-                <div style={{ fontSize: 10, color: gray2 }}>qwen-vl-plus 视觉理解</div>
+                <div style={{ fontSize: 10, color: gray2 }}>qwen-vl-max-latest 视觉理解</div>
               </div>
             </div>
             <div style={{ padding: "18px 20px" }}>
@@ -361,7 +361,7 @@ function XiaoBeiFloat({ role }) {
         method: "POST",
         headers: { "Content-Type": "application/json", "Authorization": "Bearer sk-47291327d13c4388abc42a898e0af76c" },
         body: JSON.stringify({
-          model: "qwen-vl-plus",
+          model: "qwen-vl-max-latest",
           messages: [{ role: "user", content: [
             { type: "image_url", image_url: { url: `data:${mediaType};base64,${base64}` } },
             { type: "text", text: "请识别图片中的军事装备或国防相关内容，用中文描述（50字以内），并结合兵工精神给出一句简短点评。如不是军事装备，也请描述并尝试联系国防主题。" }
@@ -445,13 +445,16 @@ function XiaoBeiFloat({ role }) {
 
       {/* 侧边聊天窗口 */}
       {open && (
-        <div style={{
-          position: "fixed", bottom: 20, right: 20, zIndex: 999,
-          width: 320, height: 480,
-          background: dark1, borderRadius: 20,
-          border: "1px solid rgba(6,182,212,0.3)",
-          boxShadow: "0 8px 32px rgba(0,0,0,0.5)",
-          display: "flex", flexDirection: "column",
+        <>
+          <div onClick={function() { setOpen(false); }} style={{ position: "fixed", inset: 0, zIndex: 998, background: "rgba(0,0,0,0.5)" }} />
+          <div style={{
+            position: "fixed", bottom: 0, right: 0, left: 0, zIndex: 999,
+            width: "100%", maxWidth: 480, margin: "0 auto",
+            height: "75vh",
+            background: dark1, borderRadius: "20px 20px 0 0",
+            border: "1px solid rgba(6,182,212,0.3)",
+            boxShadow: "0 -4px 32px rgba(0,0,0,0.5)",
+            display: "flex", flexDirection: "column",
           animation: "profileGen 0.3s ease both"
         }}>
           {/* 顶栏 */}
@@ -521,7 +524,7 @@ function XiaoBeiFloat({ role }) {
               onChange={function(e) { setInput(e.target.value); }}
               onKeyDown={function(e) { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(input); } }}
               placeholder="问小备任何问题…"
-              style={{ flex: 1, padding: "8px 12px", borderRadius: 10, fontSize: 12, background: "rgba(15,23,42,0.8)", border: "1px solid rgba(51,65,85,0.5)", color: text1, outline: "none" }}
+              style={{ flex: 1, padding: "8px 12px", borderRadius: 10, fontSize: 16, background: "rgba(15,23,42,0.8)", border: "1px solid rgba(51,65,85,0.5)", color: text1, outline: "none" }}
             />
             <button onClick={function() { sendMessage(input); }} disabled={loading || !input.trim()} style={{
               padding: "8px 12px", borderRadius: 10, fontSize: 12, fontWeight: 700,
@@ -531,6 +534,7 @@ function XiaoBeiFloat({ role }) {
             }}>发</button>
           </div>
         </div>
+        </>
       )}
     </>
   );
