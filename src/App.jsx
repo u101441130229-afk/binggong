@@ -25,13 +25,18 @@ function LoginPage({ onLogin }) {
   const [scanError, setScanError] = useState(null);
   const fileInputRef = useRef(null);
 
-  // 装备关键词 → 案例ID映射
+  // 装备关键词 → 案例ID映射（顺序即优先级，越靠前越优先匹配）
   const equipmentMap = [
-    { keywords: ["北斗","卫星","导航","GPS","GNSS","天线","卫星导航"], caseId: "beidou", name: "北斗卫星导航系统" },
-    { keywords: ["歼20","歼-20","战斗机","隐身","飞机","战机","航空","飞行"], caseId: "j20", name: "歼-20隐身战斗机" },
-    { keywords: ["东风","导弹","弹道","火箭","发射","洲际"], caseId: "df41", name: "东风-41导弹" },
-    { keywords: ["航母","福建","舰船","军舰","电磁弹射","舰载"], caseId: "fujian", name: "福建舰航母" },
-    { keywords: ["坦克","装甲","99A","履带","炮塔","装甲车"], caseId: "tank99a", name: "99A主战坦克" },
+    { keywords: ["运输机","运-20","运20","Y-20","Y20","大型运输","战略运输","空运","空投"], caseId: "y20", name: "运-20大型运输机" },
+    { keywords: ["歼20","歼-20","J-20","J20","隐身战斗机","战斗机","战机"], caseId: "j20", name: "歼-20隐身战斗机" },
+    { keywords: ["航母","福建舰","福建","电磁弹射","舰载机","军舰","舰船"], caseId: "fujian", name: "福建舰航母" },
+    { keywords: ["东风-41","东风41","DF-41","洲际导弹","洲际弹道"], caseId: "df41", name: "东风-41导弹" },
+    { keywords: ["东风-17","东风17","DF-17","高超音速","滑翔导弹"], caseId: "df17", name: "东风-17高超音速导弹" },
+    { keywords: ["导弹","弹道导弹","发射车","火箭炮","东风"], caseId: "df41", name: "东风-41导弹" },
+    { keywords: ["坦克","装甲","99A","99式","履带","炮塔","装甲车"], caseId: "tank99a", name: "99A主战坦克" },
+    { keywords: ["北斗","卫星导航","导航卫星","GPS","GNSS","卫星网络"], caseId: "beidou", name: "北斗卫星导航系统" },
+    { keywords: ["空间站","天宫","天和","问天","梦天","航天员","载人航天","神舟"], caseId: "tiangong", name: "天宫空间站" },
+    { keywords: ["卫星","航天","火箭","长征"], caseId: "tiangong", name: "天宫空间站" },
   ];
 
   async function handleImageRecognize(file) {
