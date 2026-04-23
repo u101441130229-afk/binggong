@@ -6,7 +6,7 @@ import {
   gray1, gray2, gray3, text1, text2,
   DIMS, CASES, CASE_ORDER, RECOMMEND_MAP,
   CHAT_SCRIPTS, dimMeta, DIM_EXP,
-  COZE_BOT_ID, COZE_API
+  COZE_BOT_ID, COZE_API, PROFILE_IMAGES
 } from "../constants.js";
 import XiaoBei from "./XiaoBei.jsx";
 import RadarChart from "./RadarChart.jsx";
@@ -223,8 +223,25 @@ function ShareCard({ profile, onClose }) {
         <div style={{ fontSize: 12, color: gray3 }}>截图或长按保存你的专属画像卡片</div>
       </div>
       <div style={{ width: "100%", maxWidth: 340, background: "linear-gradient(145deg,#0f172a,#1e293b)", borderRadius: 24, overflow: "hidden", border: "1px solid " + t.color + "55", boxShadow: "0 0 40px " + t.color + "33, 0 20px 60px rgba(0,0,0,0.6)" }}>
-        <div style={{ height: 5, background: "linear-gradient(90deg," + t.color + "," + cyan + ")" }} />
-        <div style={{ padding: "20px 22px 14px", borderBottom: "1px solid rgba(51,65,85,0.4)" }}>
+        <div style={{ height: 4, background: "linear-gradient(90deg," + t.color + "," + cyan + ")" }} />
+        {/* 动漫武器图 */}
+        {PROFILE_IMAGES && PROFILE_IMAGES[t.code] && (
+          <div style={{ position: "relative", width: "100%", height: 130, overflow: "hidden", background: "#050a14" }}>
+            <img
+              src={PROFILE_IMAGES[t.code]}
+              alt={t.cn}
+              style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center top", display: "block" }}
+            />
+            {/* 底部渐变融合 */}
+            <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 70, background: "linear-gradient(transparent,#0f172a)", pointerEvents: "none" }} />
+            {/* 左右彩边 */}
+            <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: 2, background: "linear-gradient(to bottom," + t.color + "00," + t.color + "99," + t.color + "00)", pointerEvents: "none" }} />
+            <div style={{ position: "absolute", right: 0, top: 0, bottom: 0, width: 2, background: "linear-gradient(to bottom," + t.color + "00," + t.color + "99," + t.color + "00)", pointerEvents: "none" }} />
+            {/* 画像标签 */}
+            <div style={{ position: "absolute", top: 8, left: 10, padding: "3px 8px", borderRadius: 999, background: "rgba(0,0,0,0.55)", border: "1px solid " + t.color + "66", fontSize: 9, color: t.color, fontWeight: 700 }}>✦ {t.cn}</div>
+          </div>
+        )}
+        <div style={{ padding: "16px 22px 14px", borderBottom: "1px solid rgba(51,65,85,0.4)" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
             <div style={{ width: 44, height: 44, borderRadius: 12, background: t.color + "22", border: "1px solid " + t.color + "55", display: "flex", alignItems: "center", justifyContent: "center" }}><div style={{ fontSize: 11, fontWeight: 800, color: t.color, letterSpacing: 1 }}>兵</div></div>
             <div><div style={{ fontSize: 10, color: gray2, letterSpacing: 1 }}>兵工铸魂 · 思政成长画像</div><div style={{ fontSize: 18, fontWeight: 800, color: text1, marginTop: 2 }}>{t.cn}</div></div>
@@ -345,6 +362,68 @@ function XiaoBeiChat({ profile, onClose }) {
 }
 
 // ============================================================
+// ProfileWeaponImage - 画像动漫武器图展示组件
+// ============================================================
+function ProfileWeaponImage({ src, color, typeName }) {
+  const [loaded, setLoaded] = useState(false);
+  const [errored, setErrored] = useState(false);
+
+  if (errored) return null;
+
+  return (
+    <div style={{ position: "relative", width: "100%", overflow: "hidden", maxHeight: 260, background: "#050a14" }}>
+      <img
+        src={src}
+        alt={typeName + " 动漫武器图"}
+        onLoad={function () { setLoaded(true); }}
+        onError={function () { setErrored(true); }}
+        style={{
+          width: "100%", height: "100%", objectFit: "cover",
+          display: "block", maxHeight: 260,
+          opacity: loaded ? 1 : 0,
+          transition: "opacity 0.6s ease",
+        }}
+      />
+      {/* 加载占位 */}
+      {!loaded && !errored && (
+        <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", minHeight: 120 }}>
+          <div style={{ fontSize: 11, color: "rgba(100,116,139,0.6)", animation: "pulse 1s infinite" }}>加载画像图…</div>
+        </div>
+      )}
+      {/* 底部渐变 - 与卡片背景融合 */}
+      <div style={{
+        position: "absolute", bottom: 0, left: 0, right: 0, height: 90,
+        background: "linear-gradient(transparent, #1e293b)",
+        pointerEvents: "none",
+      }} />
+      {/* 左侧彩色竖线装饰 */}
+      <div style={{
+        position: "absolute", left: 0, top: 0, bottom: 0, width: 3,
+        background: "linear-gradient(to bottom," + color + "00," + color + "cc," + color + "00)",
+      }} />
+      {/* 右侧彩色竖线装饰 */}
+      <div style={{
+        position: "absolute", right: 0, top: 0, bottom: 0, width: 3,
+        background: "linear-gradient(to bottom," + color + "00," + color + "cc," + color + "00)",
+      }} />
+      {/* 画像类型标签 */}
+      {loaded && (
+        <div style={{
+          position: "absolute", top: 12, left: 14,
+          padding: "4px 10px", borderRadius: 999,
+          background: "rgba(0,0,0,0.55)",
+          border: "1px solid " + color + "66",
+          fontSize: 10, color: color, fontWeight: 700,
+          backdropFilter: "blur(4px)",
+        }}>
+          ✦ {typeName}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ============================================================
 // ProfileResultView - 画像结果页主组件
 // ============================================================
 export default function ProfileResultView({ profile, aiAnalysis, learnedCases = [], openChatOnReturn = false, onChatOpened, onChooseCase, onRetake }) {
@@ -407,9 +486,13 @@ export default function ProfileResultView({ profile, aiAnalysis, learnedCases = 
         </div>
 
         {/* 画像主卡片 */}
-        <div style={{ background: "linear-gradient(135deg," + dark2 + "," + dark3 + ")", border: "1px solid " + t.color + "55", borderRadius: 18, padding: "24px 22px", marginBottom: 18, position: "relative", overflow: "hidden" }}>
-          <div style={{ position: "absolute", top: -40, right: -40, width: 180, height: 180, borderRadius: "50%", background: "radial-gradient(circle," + t.color + "22 0%,transparent 70%)" }} />
-          <div style={{ position: "relative" }}>
+        <div style={{ background: "linear-gradient(135deg," + dark2 + "," + dark3 + ")", border: "1px solid " + t.color + "55", borderRadius: 18, marginBottom: 18, position: "relative", overflow: "hidden" }}>
+          {/* 动漫武器图 */}
+          {PROFILE_IMAGES && PROFILE_IMAGES[t.code] && (
+            <ProfileWeaponImage src={PROFILE_IMAGES[t.code]} color={t.color} typeName={t.cn} />
+          )}
+          <div style={{ position: "absolute", top: -40, right: -40, width: 180, height: 180, borderRadius: "50%", background: "radial-gradient(circle," + t.color + "22 0%,transparent 70%)", pointerEvents: "none" }} />
+          <div style={{ position: "relative", padding: "24px 22px" }}>
             <div style={{ fontSize: 11, color: t.color, fontWeight: 700, letterSpacing: 2, marginBottom: 8 }}>画像类型 · {t.code}</div>
             <div style={{ fontSize: 30, fontWeight: 800, marginBottom: 10, letterSpacing: -0.5 }}>{t.cn}</div>
             <div style={{ fontSize: 14, color: text2, marginBottom: 12, fontStyle: "italic" }}>{t.intro}</div>

@@ -1,5 +1,5 @@
 // TODO: DeepSeek接入点
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import {
   blue, cyan, green, yellow, red, purple,
   dark0, dark1, dark2, dark3,
@@ -9,7 +9,109 @@ import {
 import XiaoBei from "./XiaoBei.jsx";
 import { useTyping, FadeIn } from "../utils.jsx";
 
-// ====================== 小备回应预设 ======================
+// ====================== 图片轮播组件 ======================
+function ImageCarousel({ images, title }) {
+  const [cur, setCur] = useState(0);
+  const [loaded, setLoaded] = useState({});
+  const [errored, setErrored] = useState({});
+  const timerRef = useRef(null);
+
+  const startAuto = useCallback(function () {
+    if (images.length <= 1) return;
+    timerRef.current = setInterval(function () {
+      setCur(function (prev) { return (prev + 1) % images.length; });
+    }, 4000);
+  }, [images.length]);
+
+  useEffect(function () {
+    setCur(0);
+    setLoaded({});
+    setErrored({});
+    startAuto();
+    return function () { clearInterval(timerRef.current); };
+  }, [images, startAuto]);
+
+  function goTo(idx) {
+    clearInterval(timerRef.current);
+    setCur(idx);
+    startAuto();
+  }
+  function prev() {
+    clearInterval(timerRef.current);
+    setCur(function (p) { return (p - 1 + images.length) % images.length; });
+    startAuto();
+  }
+  function next() {
+    clearInterval(timerRef.current);
+    setCur(function (p) { return (p + 1) % images.length; });
+    startAuto();
+  }
+
+  // 过滤掉加载出错的图片，若全出错则不显示
+  const validImages = images.filter(function (_, i) { return !errored[i]; });
+  if (!images || images.length === 0 || (Object.keys(errored).length > 0 && validImages.length === 0)) return null;
+
+  const imgSrc = images[cur];
+  const isErr = errored[cur];
+  const isLoading = !loaded[cur] && !errored[cur];
+
+  return (
+    <div style={{
+      position: "relative", width: "100%", borderRadius: "8px 8px 0 0",
+      overflow: "hidden", background: "#0a0f1a", aspectRatio: "16/9",
+      maxHeight: 280, cursor: images.length > 1 ? "grab" : "default"
+    }}>
+      {/* 图片 */}
+      {!isErr && (
+        <img
+          key={imgSrc}
+          src={imgSrc}
+          alt={title}
+          onLoad={function () { setLoaded(function (p) { return { ...p, [cur]: true }; }); }}
+          onError={function () { setErrored(function (p) { return { ...p, [cur]: true }; }); }}
+          style={{
+            width: "100%", height: "100%", objectFit: "cover",
+            display: "block", transition: "opacity 0.4s",
+            opacity: isLoading ? 0 : 1,
+          }}
+        />
+      )}
+      {/* 加载占位 */}
+      {isLoading && (
+        <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <div style={{ fontSize: 11, color: gray2, animation: "pulse 1s infinite" }}>图片加载中…</div>
+        </div>
+      )}
+      {/* 渐变遮罩 */}
+      <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 60, background: "linear-gradient(transparent, rgba(10,15,26,0.8))", pointerEvents: "none" }} />
+      {/* 左右箭头 */}
+      {images.length > 1 && (
+        <>
+          <button onClick={prev} style={{ position: "absolute", left: 8, top: "50%", transform: "translateY(-50%)", background: "rgba(0,0,0,0.45)", border: "none", color: "#fff", width: 32, height: 32, borderRadius: "50%", fontSize: 16, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 2 }}>‹</button>
+          <button onClick={next} style={{ position: "absolute", right: 8, top: "50%", transform: "translateY(-50%)", background: "rgba(0,0,0,0.45)", border: "none", color: "#fff", width: 32, height: 32, borderRadius: "50%", fontSize: 16, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 2 }}>›</button>
+        </>
+      )}
+      {/* 指示点 */}
+      {images.length > 1 && (
+        <div style={{ position: "absolute", bottom: 10, left: 0, right: 0, display: "flex", justifyContent: "center", gap: 6, zIndex: 2 }}>
+          {images.map(function (_, i) {
+            return (
+              <button key={i} onClick={function () { goTo(i); }} style={{ width: i === cur ? 18 : 6, height: 6, borderRadius: 3, background: i === cur ? cyan : "rgba(255,255,255,0.4)", border: "none", cursor: "pointer", padding: 0, transition: "all 0.3s" }} />
+            );
+          })}
+        </div>
+      )}
+      {/* 图片计数 */}
+      {images.length > 1 && (
+        <div style={{ position: "absolute", top: 10, right: 12, fontSize: 10, color: "rgba(255,255,255,0.7)", background: "rgba(0,0,0,0.45)", padding: "2px 8px", borderRadius: 999, zIndex: 2 }}>
+          {cur + 1} / {images.length}
+        </div>
+      )}
+    </div>
+  );
+}
+
+
 const Q_RESPONSES = {
   beidou: [
     "你触到了关键——资源不是成功的前提，路径选择才是。陈芳允选择双星，不是因为条件好，恰恰是因为条件不够好。这是'在约束里找创造力'而不是'等条件够了再出发'。",
@@ -374,6 +476,10 @@ export default function CaseStudyView({ caseId, learnedCases = [], onComplete, o
                 <span style={{ fontSize: 14, fontWeight: 700 }}>{cur.title}</span>
                 <span style={{ marginLeft: "auto", fontSize: 11, color: gray3, background: "rgba(59,130,246,0.1)", padding: "3px 10px", borderRadius: 10 }}>GraphRAG · 3跳关联</span>
               </div>
+              {/* 图片轮播 */}
+              {cur.images && cur.images.length > 0 && (
+                <ImageCarousel images={cur.images} title={cur.title} />
+              )}
               <div style={{ padding: "16px 18px" }}>
                 {!contentDone ? (
                   <div style={{ fontSize: 13.5, lineHeight: 1.9, color: text2, whiteSpace: "pre-wrap" }}>
