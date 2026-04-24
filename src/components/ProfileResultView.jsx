@@ -502,6 +502,12 @@ export default function ProfileResultView({ profile, aiAnalysis, learnedCases = 
               <button onClick={function () { setShowShare(true); }} style={{ flex: 1, padding: "10px 14px", borderRadius: 12, fontSize: 13, fontWeight: 700, background: "rgba(234,179,8,0.1)", border: "1px solid rgba(234,179,8,0.3)", color: yellow, cursor: "pointer", display: "flex", alignItems: "center", gap: 6, justifyContent: "center" }}>🪪 生成画像卡片</button>
               <button onClick={function () { if (syncDone || syncing) return; setSyncing(true); setTimeout(function () { setSyncing(false); setSyncDone(true); }, 1500); }} style={{ flex: 1, padding: "10px 14px", borderRadius: 12, fontSize: 13, fontWeight: 700, background: syncDone ? "rgba(34,197,94,0.1)" : "rgba(139,92,246,0.1)", border: "1px solid " + (syncDone ? "rgba(34,197,94,0.3)" : "rgba(139,92,246,0.3)"), color: syncDone ? green : purple, cursor: syncDone ? "default" : "pointer", display: "flex", alignItems: "center", gap: 6, justifyContent: "center", whiteSpace: "nowrap" }}>{syncing ? <span style={{ animation: "pulse 0.6s infinite" }}>⏳</span> : syncDone ? "✓" : "📤"}{syncing ? "同步中…" : syncDone ? "已同步给老师" : "同步给老师"}</button>
             </div>
+            {/* GUIDE类型额外显示预约辅导员按钮 */}
+            {t.code === "GUIDE" && (
+              <div style={{ marginTop: 12 }}>
+                <GuideAppointment reason="系统检测到你当前需要更多个性化支持，建议与辅导员进行一对一沟通。" />
+              </div>
+            )}
           </div>
         </div>
 
