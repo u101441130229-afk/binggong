@@ -158,7 +158,7 @@ function LoginPage({ onLogin }) {
         <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.75)", zIndex: 100, display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }} onClick={function () { setShowInfo(false); }}>
           <div style={{ width: "100%", maxWidth: 420, background: dark1, borderRadius: 20, border: "1px solid rgba(6,182,212,0.3)", overflow: "hidden", animation: "profileGen 0.4s ease both" }} onClick={function (e) { e.stopPropagation(); }}>
             <div style={{ padding: "16px 20px", borderBottom: "1px solid rgba(51,65,85,0.4)", display: "flex", alignItems: "center", gap: 10 }}>
-              <div style={{ width: 36, height: 36, borderRadius: 10, background: "linear-gradient(135deg,#3b82f6,#06b6d4)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, fontWeight: 800, color: "#fff" }}>兵</div>
+              <img src="/favicon.png" style={{ width: 36, height: 36, borderRadius: 10, objectFit: "cover" }} alt="兵" />
               <div>
                 <div style={{ fontSize: 14, fontWeight: 800, color: text1 }}>兵工铸魂 · 智绘"易"学</div>
                 <div style={{ fontSize: 10, color: gray2 }}>沈阳理工大学装备工程学院 · AI思政教育系统</div>
@@ -191,7 +191,7 @@ function LoginPage({ onLogin }) {
       <div style={{ position: "relative", zIndex: 1, display: "flex", flexDirection: "column", alignItems: "center" }}>
         {/* Logo + 标题 */}
         <div style={{ marginBottom: 40, textAlign: "center", animation: "fadeSlideUp 0.5s ease both" }}>
-          <div style={{ width: 64, height: 64, borderRadius: 18, background: "linear-gradient(135deg,#3b82f6,#06b6d4)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 32, fontWeight: 800, color: "#fff", margin: "0 auto 16px" }}>兵</div>
+          <img src="/favicon.png" style={{ width: 64, height: 64, borderRadius: 18, objectFit: "cover", margin: "0 auto 16px", display: "block" }} alt="兵" />
           <div style={{ fontSize: 22, fontWeight: 800, color: text1, letterSpacing: 2 }}>兵工铸魂 · 智绘"易"学</div>
           <div style={{ fontSize: 13, color: gray2, marginTop: 6 }}>沈阳理工大学 · 装备工程学院 · AI思政教育系统</div>
         </div>
