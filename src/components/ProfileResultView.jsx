@@ -230,7 +230,7 @@ function ShareCard({ profile, onClose }) {
             <img
               src={PROFILE_IMAGES[t.code]}
               alt={t.cn}
-              style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center top", display: "block" }}
+              style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center center", display: "block" }}
             />
             {/* 底部渐变融合 */}
             <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 70, background: "linear-gradient(transparent,#0f172a)", pointerEvents: "none" }} />
