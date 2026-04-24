@@ -67,7 +67,7 @@ function LoginPage({ onLogin }) {
             role: "user",
             content: [
               { type: "image_url", image_url: { url: `data:${mediaType};base64,${base64}` } },
-              { type: "text", text: "请识别图片中的军事装备或国防相关内容。按以下格式用中文回答（总字数60字以内）：第一行：装备名称及简介（15字以内）。第二行：一个有画面感的细节或成就（20字以内）。第三行：一句引导思考的问题，以→开头（20字以内）。如果不是军事装备，也请按此格式描述。" }
+              { type: "text", text: "请识别图片中的军事装备或国防相关内容。按以下格式用中文回答（总字数60字以内）：第一行装备名称及简介15字以内。第二行一个有画面感的细节或成就20字以内。第三行一句引导思考的问题以→开头20字以内。如果不是军事装备也请按此格式描述。" }
             ]
           }],
           max_tokens: 150
@@ -294,7 +294,7 @@ function LoginPage({ onLogin }) {
             <div style={{ padding: "18px 20px" }}>
               <div style={{ fontSize: 12, color: gray3, marginBottom: 8 }}>识别到的内容：</div>
               <div style={{ fontSize: 13, color: text1, lineHeight: 2, padding: "12px 14px", background: "rgba(6,182,212,0.06)", border: "1px solid rgba(6,182,212,0.2)", borderRadius: 10, marginBottom: 16 }}>
-                {scanResult.description.split(/\n|。(?=第|→)/).filter(function(s){return s.trim();}).map(function(line, i) {
+                {scanResult.description.split(/\n|。(?=[第→])/).map(function(line, i) {
                   if (!line.trim()) return null;
                   const isQuestion = line.startsWith("→");
                   return (
@@ -360,6 +360,7 @@ function XiaoBeiFloat({ role }) {
   const [imgScanning, setImgScanning] = useState(false);
   const scrollRef = useRef(null);
   const camInputRef = useRef(null);
+  const camGalleryRef = useRef(null);
 
   useEffect(function() {
     if (scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
@@ -534,12 +535,20 @@ function XiaoBeiFloat({ role }) {
           <div style={{ padding: "10px 14px", borderTop: "1px solid rgba(51,65,85,0.3)", flexShrink: 0, display: "flex", gap: 8 }}>
             <input ref={camInputRef} type="file" accept="image/*" capture="environment" style={{ display: "none" }}
               onChange={function(e) { if (e.target.files[0]) handleCameraInput(e.target.files[0]); }} />
+            <input ref={camGalleryRef} type="file" accept="image/*" style={{ display: "none" }}
+              onChange={function(e) { if (e.target.files[0]) handleCameraInput(e.target.files[0]); }} />
             <button onClick={function() { camInputRef.current.click(); }} disabled={imgScanning || loading} style={{
               padding: "8px 10px", borderRadius: 10, fontSize: 16,
               background: "rgba(6,182,212,0.1)", border: "1px solid rgba(6,182,212,0.25)",
               color: cyan, cursor: imgScanning ? "not-allowed" : "pointer", flexShrink: 0,
               opacity: imgScanning ? 0.5 : 1
             }}>📷</button>
+            <button onClick={function() { camGalleryRef.current.click(); }} disabled={imgScanning || loading} style={{
+              padding: "8px 10px", borderRadius: 10, fontSize: 16,
+              background: "rgba(139,92,246,0.1)", border: "1px solid rgba(139,92,246,0.25)",
+              color: "#a78bfa", cursor: imgScanning ? "not-allowed" : "pointer", flexShrink: 0,
+              opacity: imgScanning ? 0.5 : 1
+            }}>🖼️</button>
             <input
               value={input}
               onChange={function(e) { setInput(e.target.value); }}
