@@ -67,11 +67,7 @@ function LoginPage({ onLogin }) {
             role: "user",
             content: [
               { type: "image_url", image_url: { url: `data:${mediaType};base64,${base64}` } },
-              { type: "text", text: "请识别图片中的军事装备或国防相关内容。按以下格式用中文回答（总字数60字以内）：
-第一行：装备名称及简介（15字以内）
-第二行：一个有画面感的细节或成就（20字以内）
-第三行：一句引导思考的问题，以'→'开头（20字以内）
-如果不是军事装备，也请按此格式描述图片内容并引导联系国防主题。" }
+              { type: "text", text: "请识别图片中的军事装备或国防相关内容。按以下格式用中文回答（总字数60字以内）：第一行：装备名称及简介（15字以内）。第二行：一个有画面感的细节或成就（20字以内）。第三行：一句引导思考的问题，以→开头（20字以内）。如果不是军事装备，也请按此格式描述。" }
             ]
           }],
           max_tokens: 150
@@ -298,8 +294,7 @@ function LoginPage({ onLogin }) {
             <div style={{ padding: "18px 20px" }}>
               <div style={{ fontSize: 12, color: gray3, marginBottom: 8 }}>识别到的内容：</div>
               <div style={{ fontSize: 13, color: text1, lineHeight: 2, padding: "12px 14px", background: "rgba(6,182,212,0.06)", border: "1px solid rgba(6,182,212,0.2)", borderRadius: 10, marginBottom: 16 }}>
-                {scanResult.description.split("
-").map(function(line, i) {
+                {scanResult.description.split(/\n|。(?=第|→)/).filter(function(s){return s.trim();}).map(function(line, i) {
                   if (!line.trim()) return null;
                   const isQuestion = line.startsWith("→");
                   return (
