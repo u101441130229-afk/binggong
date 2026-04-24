@@ -24,6 +24,7 @@ function LoginPage({ onLogin }) {
   const [scanResult, setScanResult] = useState(null);
   const [scanError, setScanError] = useState(null);
   const fileInputRef = useRef(null);
+  const galleryInputRef = useRef(null);
 
   // 装备关键词 → 案例ID映射（顺序即优先级，越靠前越优先匹配）
   const equipmentMap = [
@@ -66,7 +67,11 @@ function LoginPage({ onLogin }) {
             role: "user",
             content: [
               { type: "image_url", image_url: { url: `data:${mediaType};base64,${base64}` } },
-              { type: "text", text: "请识别图片中的军事装备或国防相关内容。用中文简洁描述你看到的内容（30字以内），重点说明是什么装备类型。如果不是军事装备，也请简要描述图片内容。" }
+              { type: "text", text: "请识别图片中的军事装备或国防相关内容。按以下格式用中文回答（总字数60字以内）：
+第一行：装备名称及简介（15字以内）
+第二行：一个有画面感的细节或成就（20字以内）
+第三行：一句引导思考的问题，以'→'开头（20字以内）
+如果不是军事装备，也请按此格式描述图片内容并引导联系国防主题。" }
             ]
           }],
           max_tokens: 150
@@ -245,14 +250,21 @@ function LoginPage({ onLogin }) {
         <div style={{ marginTop: 20, animation: "fadeSlideUp 0.45s 0.75s ease both", opacity: 0 }}>
           <input ref={fileInputRef} type="file" accept="image/*" capture="environment" style={{ display: "none" }}
             onChange={function(e) { if (e.target.files[0]) handleImageRecognize(e.target.files[0]); }} />
-          <button onClick={function() { fileInputRef.current.click(); }} style={{
-            display: "flex", alignItems: "center", gap: 8, padding: "10px 24px", borderRadius: 12,
-            background: "rgba(6,182,212,0.1)", border: "1px solid rgba(6,182,212,0.3)",
-            color: cyan, cursor: "pointer", fontSize: 13, fontWeight: 600, margin: "0 auto"
-          }}>
-            📷 拍照识别兵工装备
-          </button>
-          <div style={{ fontSize: 10, color: gray2, textAlign: "center", marginTop: 6 }}>拍一张兵工装备照片，自动跳转对应案例</div>
+          <input ref={galleryInputRef} type="file" accept="image/*" style={{ display: "none" }}
+            onChange={function(e) { if (e.target.files[0]) handleImageRecognize(e.target.files[0]); }} />
+          <div style={{ display: "flex", gap: 10, justifyContent: "center" }}>
+            <button onClick={function() { fileInputRef.current.click(); }} style={{
+              display: "flex", alignItems: "center", gap: 6, padding: "10px 18px", borderRadius: 12,
+              background: "rgba(6,182,212,0.1)", border: "1px solid rgba(6,182,212,0.3)",
+              color: cyan, cursor: "pointer", fontSize: 13, fontWeight: 600
+            }}>📷 拍照识别</button>
+            <button onClick={function() { galleryInputRef.current.click(); }} style={{
+              display: "flex", alignItems: "center", gap: 6, padding: "10px 18px", borderRadius: 12,
+              background: "rgba(139,92,246,0.1)", border: "1px solid rgba(139,92,246,0.3)",
+              color: "#a78bfa", cursor: "pointer", fontSize: 13, fontWeight: 600
+            }}>🖼️ 从相册选取</button>
+          </div>
+          <div style={{ fontSize: 10, color: gray2, textAlign: "center", marginTop: 6 }}>拍照或选取兵工装备图片，自动跳转对应案例</div>
         </div>
 
         <div style={{ marginTop: 24, fontSize: 11, color: "#2d3748", textAlign: "center", lineHeight: 1.8, animation: "fadeIn 0.4s 0.8s ease both", opacity: 0 }}>
@@ -285,8 +297,17 @@ function LoginPage({ onLogin }) {
             </div>
             <div style={{ padding: "18px 20px" }}>
               <div style={{ fontSize: 12, color: gray3, marginBottom: 8 }}>识别到的内容：</div>
-              <div style={{ fontSize: 13, color: text1, lineHeight: 1.75, padding: "10px 14px", background: "rgba(6,182,212,0.06)", border: "1px solid rgba(6,182,212,0.2)", borderRadius: 10, marginBottom: 16 }}>
-                {scanResult.description}
+              <div style={{ fontSize: 13, color: text1, lineHeight: 2, padding: "12px 14px", background: "rgba(6,182,212,0.06)", border: "1px solid rgba(6,182,212,0.2)", borderRadius: 10, marginBottom: 16 }}>
+                {scanResult.description.split("
+").map(function(line, i) {
+                  if (!line.trim()) return null;
+                  const isQuestion = line.startsWith("→");
+                  return (
+                    <div key={i} style={{ marginBottom: i < 2 ? 8 : 0, color: isQuestion ? cyan : i === 0 ? text1 : "#94a3b8", fontWeight: isQuestion ? 600 : i === 0 ? 700 : 400, fontSize: isQuestion ? 13 : i === 0 ? 14 : 12 }}>
+                      {line}
+                    </div>
+                  );
+                })}
               </div>
               {scanResult.matched ? (
                 <>

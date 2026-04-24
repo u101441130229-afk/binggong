@@ -50,7 +50,7 @@ export default function DailyQuestion({ onClose }) {
                 onChange={function (e) { setInput(e.target.value); }}
                 placeholder="写下你的第一反应，不用完整，几句话就行…"
                 rows={3}
-                style={{ width: "100%", padding: "10px 12px", borderRadius: 10, background: "rgba(15,23,42,0.8)", border: "1px solid rgba(51,65,85,0.5)", color: text1, fontSize: 13, resize: "none", outline: "none", boxSizing: "border-box", lineHeight: 1.6 }}
+                style={{ width: "100%", padding: "10px 12px", borderRadius: 10, background: "rgba(15,23,42,0.8)", border: "1px solid rgba(51,65,85,0.5)", color: text1, fontSize: 16, resize: "none", outline: "none", boxSizing: "border-box", lineHeight: 1.6 }}
               />
               <div style={{ display: "flex", gap: 8, marginTop: 12 }}>
                 <button onClick={onClose} style={{ flex: 1, padding: "10px", borderRadius: 10, background: "transparent", border: "1px solid rgba(51,65,85,0.4)", color: gray3, cursor: "pointer", fontSize: 13 }}>跳过</button>
