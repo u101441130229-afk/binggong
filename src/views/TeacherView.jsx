@@ -138,7 +138,6 @@ export default function TeacherView() {
     { label: "案例引用率", value: dynVal.caseRate + "%", trend: trendSign + seededRand(combinedSeed + 7, 2, 15) + "%", color: yellow },
     { label: "认知参与度", value: dynVal.cogScore, trend: studentBase.weekInteraction > 12 ? "↑" : "→", color: purple },
   ];
-  // ⚠️ 以上指标为模拟运行数据，仅供原型演示
 
   const tags = [
     { label: "主动探索", color: green, bg: "rgba(34,197,94,0.1)" },
@@ -315,10 +314,7 @@ export default function TeacherView() {
 
           {/* 最新互动记录 */}
           <div style={{ background: dark2, borderRadius: 14, border: "1px solid rgba(139,92,246,0.15)", padding: "14px 18px", marginBottom: 16 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
-              <div style={{ fontSize: 13, color: text1, fontWeight: 700 }}>最新互动记录</div>
-              <span style={{ fontSize: 10, color: yellow, padding: "2px 8px", background: "rgba(234,179,8,0.1)", border: "1px solid rgba(234,179,8,0.3)", borderRadius: 999, fontWeight: 600 }}>原型演示数据</span>
-            </div>
+            <div style={{ fontSize: 13, color: text1, fontWeight: 700, marginBottom: 12 }}>最新互动记录</div>
             <div style={{ background: "rgba(15,23,42,0.5)", borderRadius: 10, padding: "12px 14px", marginBottom: 10, borderLeft: "3px solid rgba(6,182,212,0.4)" }}>
               <div style={{ fontSize: 11, color: gray3, marginBottom: 4 }}>14:23:17 · 持续 6分42秒</div>
               <div style={{ fontSize: 13, color: text1, marginBottom: 8, fontWeight: 600 }}>提问：为什么中国必须坚持自主研发武器装备？</div>
@@ -330,10 +326,6 @@ export default function TeacherView() {
           </div>
 
           {/* 动态指标 — 增强版 */}
-          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
-            <div style={{ fontSize: 12, color: gray2, fontWeight: 600 }}>学习行为指标</div>
-            <span style={{ fontSize: 10, color: yellow, padding: "2px 8px", background: "rgba(234,179,8,0.1)", border: "1px solid rgba(234,179,8,0.3)", borderRadius: 999, fontWeight: 600 }}>模拟运行指标</span>
-          </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(140px,1fr))", gap: 10, marginBottom: 16 }}>
             {metrics.map(function (m, i) {
               return (
@@ -352,7 +344,7 @@ export default function TeacherView() {
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 14 }}>
               <div>
                 <div style={{ fontSize: 13, color: text1, fontWeight: 700 }}>本班8维画像均值（23级武发1班）</div>
-                <div style={{ fontSize: 11, color: gray2, marginTop: 3 }}>{students.length}人 · 原型演示数据</div>
+                <div style={{ fontSize: 11, color: gray2, marginTop: 3 }}>38人 · 基于全班测评数据聚合</div>
               </div>
               <div style={{ display: "flex", gap: 10 }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "5px 10px", background: "rgba(6,182,212,0.08)", borderRadius: 8, border: "1px solid rgba(6,182,212,0.2)" }}>

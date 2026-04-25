@@ -58,10 +58,10 @@ export default function SurveyView({ onComplete, onSkip }) {
   return (
     <div style={{ background: dark0, minHeight: "100%", color: text1 }}>
       <div style={{ background: "linear-gradient(135deg," + dark1 + "," + dark3 + ")", borderBottom: "1px solid rgba(59,130,246,0.2)", padding: "16px 24px", display: "flex", alignItems: "center", gap: 12 }}>
-        <div style={{ width: 36, height: 36, borderRadius: 10, overflow: "hidden", flexShrink: 0 }}><img src="/favicon.png" style={{ width: "100%", height: "100%", objectFit: "cover" }} alt="兵" /></div>
+        <div style={{ width: 36, height: 36, borderRadius: 10, background: "linear-gradient(135deg,#3b82f6,#06b6d4)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, fontWeight: 700, color: "#fff" }}>兵</div>
         <div>
           <div style={{ fontSize: 16, fontWeight: 700, letterSpacing: 1 }}>思政成长画像测评</div>
-          <div style={{ fontSize: 11, color: gray1, marginTop: 2 }}>16+1 动态追问 · 用于生成你的兵工思政画像</div>
+          <div style={{ fontSize: 11, color: gray1, marginTop: 2 }}>共 {total} 题 · 用于生成你的兵工思政画像</div>
         </div>
       </div>
 
@@ -139,7 +139,7 @@ export default function SurveyView({ onComplete, onSkip }) {
                   <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 14px", background: "rgba(234,179,8,0.06)", border: "1px solid rgba(234,179,8,0.2)", borderRadius: 12, marginBottom: 8, animation: "fadeSlideUp 0.4s ease both" }}>
                     <XiaoBei size={32} speaking={false} />
                     <div style={{ flex: 1, fontSize: 12, color: yellow, lineHeight: 1.65 }}>
-                      检测到你希望获得更多支持，小备想再多了解一下你的需求～
+                      根据你的回答，小备想多问你一个问题——这会帮助系统为你生成更准确的画像。
                     </div>
                   </div>
                 )}
@@ -179,7 +179,7 @@ export default function SurveyView({ onComplete, onSkip }) {
         {/* 底部操作 */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 20, gap: 12, flexWrap: "wrap" }}>
           <div style={{ fontSize: 12, color: ok ? green : gray1, lineHeight: 1.6, flex: 1, minWidth: 200 }}>
-            {ok ? "✓ 全部完成,可以生成你的画像了" : "请完成全部题目后提交（16道基础题 + 动态追问）"}
+            {ok ? "✓ 全部完成,可以生成你的画像了" : "请完成全部题目后提交"}
           </div>
           <div style={{ display: "flex", gap: 10 }}>
             <button onClick={onSkip} disabled={submitting} style={{ padding: "10px 18px", borderRadius: 10, background: "transparent", border: "1px solid rgba(100,116,139,0.4)", color: gray3, cursor: submitting ? "not-allowed" : "pointer", fontSize: 13, opacity: submitting ? 0.5 : 1 }}>跳过测评</button>
