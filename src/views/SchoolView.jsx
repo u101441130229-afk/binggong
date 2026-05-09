@@ -167,9 +167,9 @@ export default function SchoolView() {
 八维画像均值：${dimData}
 学生总数：${displayCovered}人，完成测评：${displayTested}人，累计互动：${displayInteractions}次
 主要短板：思辨开放度和职业方向感`;
-      const res = await fetch("https://api.deepseek.com/chat/completions", {
+      const res = await fetch("/api/deepseek", {
         method: "POST",
-        headers: { "Content-Type": "application/json", "Authorization": "Bearer sk-881c1a3f71794c418186d46bd6628167" },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ model: "deepseek-chat", messages: [{ role: "user", content: prompt }], max_tokens: 400, temperature: 0.7 })
       });
       const data = await res.json();

@@ -55,11 +55,10 @@ function LoginPage({ onLogin }) {
       });
       const mediaType = file.type || "image/jpeg";
 
-      const res = await fetch("https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions", {
+      const res = await fetch("/api/qwen-vl", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
-          "Authorization": "Bearer sk-47291327d13c4388abc42a898e0af76c"
+          "Content-Type": "application/json"
         },
         body: JSON.stringify({
           model: "qwen-vl-max-latest",
@@ -379,9 +378,9 @@ function XiaoBeiFloat({ role }) {
         reader.readAsDataURL(file);
       });
       const mediaType = file.type || "image/jpeg";
-      const res = await fetch("https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions", {
+      const res = await fetch("/api/qwen-vl", {
         method: "POST",
-        headers: { "Content-Type": "application/json", "Authorization": "Bearer sk-47291327d13c4388abc42a898e0af76c" },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           model: "qwen-vl-max-latest",
           messages: [{ role: "user", content: [
@@ -416,9 +415,9 @@ function XiaoBeiFloat({ role }) {
       const history = messages.slice(-6).map(function(m) {
         return { role: m.role === "assistant" ? "assistant" : "user", content: m.text };
       });
-      const res = await fetch("https://api.deepseek.com/chat/completions", {
+      const res = await fetch("/api/deepseek", {
         method: "POST",
-        headers: { "Content-Type": "application/json", "Authorization": "Bearer sk-881c1a3f71794c418186d46bd6628167" },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           model: "deepseek-chat",
           messages: [{ role: "system", content: systemPrompt }, ...history, { role: "user", content: text.trim() }],

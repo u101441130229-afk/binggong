@@ -59,9 +59,9 @@ ${p.matchInfo}
 需关注维度：${lowDims.length > 0 ? lowDims.map(d => dimNames[d]).join("、") : "各维度较均衡"}
 各维度得分：${DIMS.map(d => dimNames[d] + p.raw[d] + "分").join("、")}`;
 
-      const res = await fetch("https://api.deepseek.com/chat/completions", {
+      const res = await fetch("/api/deepseek", {
         method: "POST",
-        headers: { "Content-Type": "application/json", "Authorization": "Bearer sk-881c1a3f71794c418186d46bd6628167" },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           model: "deepseek-chat",
           messages: [{ role: "user", content: prompt }],

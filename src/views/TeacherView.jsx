@@ -76,11 +76,10 @@ export default function TeacherView() {
 偏高维度：${highDims.length > 0 ? highDims.join("、") : "无"}
 匹配信息：${prof.matchInfo}`;
 
-      const res = await fetch("https://api.deepseek.com/chat/completions", {
+      const res = await fetch("/api/deepseek", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
-          "Authorization": "Bearer sk-881c1a3f71794c418186d46bd6628167"
+          "Content-Type": "application/json"
         },
         body: JSON.stringify({
           model: "deepseek-chat",

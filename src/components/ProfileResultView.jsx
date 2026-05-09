@@ -105,11 +105,10 @@ function CozeChat({ profile, onClose }) {
         return { role: m.role === "assistant" ? "assistant" : "user", content: m.text };
       });
 
-      const res = await fetch("https://api.deepseek.com/chat/completions", {
+      const res = await fetch("/api/deepseek", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
-          "Authorization": "Bearer sk-881c1a3f71794c418186d46bd6628167"
+          "Content-Type": "application/json"
         },
         body: JSON.stringify({
           model: "deepseek-chat",
@@ -198,9 +197,9 @@ function ShareCard({ profile, onClose }) {
     const lowDims = DIMS.filter(d => profile.lvls[d] === "L").map(d => dimMeta[d].name);
     const highDims = DIMS.filter(d => profile.lvls[d] === "H").map(d => dimMeta[d].name);
     const prompt = `你是兵工思政画像系统。根据以下学生数据，生成一句个性化励志金句（20字以内，不加引号，不加任何解释，只输出金句本身）：\n画像类型：${t.cn}\n优势维度：${highDims.join("、") || "均衡"}\n待提升：${lowDims.join("、") || "无明显短板"}\n风格：简洁有力，结合兵工/国防精神，有画面感`;
-    fetch("https://api.deepseek.com/chat/completions", {
+    fetch("/api/deepseek", {
       method: "POST",
-      headers: { "Content-Type": "application/json", "Authorization": "Bearer sk-881c1a3f71794c418186d46bd6628167" },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ model: "deepseek-chat", messages: [{ role: "user", content: prompt }], max_tokens: 60, temperature: 0.9 })
     }).then(function(res) { return res.json(); })
       .then(function(data) {
