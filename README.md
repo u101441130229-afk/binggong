@@ -1,16 +1,179 @@
-# React + Vite
+# 兵工铸魂 · 智绘“易”学
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+面向兵工院校思政教育场景的 AI 画像驱动学习系统。
 
-Currently, two official plugins are available:
+本项目围绕“兵工文化、国防精神、学生成长画像、AI 智能引导”构建学生端、教师端、学校端三端联动平台，探索人工智能技术在高校思政教育中的个性化应用。
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 在线访问
 
-## React Compiler
+- 在线体验：https://bgzh.top
+- GitHub 仓库：https://github.com/u101441130229-afk/binggong
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 项目定位
 
-## Expanding the ESLint configuration
+“兵工铸魂 · 智绘‘易’学”以沈阳理工大学装备工程学院学生为主要服务对象，通过思政成长画像测评、兵工案例推荐、AI 思政问答、装备图片识别、教师学情研判和学校数据看板等功能，形成“测评—画像—推荐—学习—反馈—研判”的闭环。
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+系统旨在让学生在兵工故事、国防案例和智能交互中增强专业认同、使命意识、价值判断和报国信心。
+
+## 核心功能
+
+### 学生端
+
+- 思政成长画像测评
+- 八维画像生成与雷达图展示
+- 个性化兵工案例推荐
+- 小备 AI 思政学习助手
+- 兵工装备图片识别
+- 每日思政问题引导
+- 历史画像记录查看
+
+### 教师端
+
+- 学生画像查看
+- 个体学情分析
+- 八维画像快览
+- AI 个性化教学建议
+- 学生互动数据展示
+- 学情报告导出
+
+### 学校端
+
+- 学院群体画像分析
+- 班级思政画像分布
+- 学生参与率趋势展示
+- 思政主题热度分析
+- AI 决策建议生成
+- 学校层面教学数据看板
+
+## 技术架构
+
+- 前端框架：React
+- 构建工具：Vite
+- 部署平台：Vercel
+- 后端接口：Vercel Serverless Functions
+- AI 文本能力：DeepSeek
+- AI 图像识别能力：通义千问 VL
+- 数据存储：localStorage 本地模拟数据
+- 图表展示：SVG 雷达图、饼图、趋势图等
+
+## AI 能力说明
+
+### DeepSeek 文本智能能力
+
+系统通过 DeepSeek 支持以下功能：
+
+- 小备 AI 思政问答
+- 学生画像解读
+- 教师端教学建议生成
+- 学校端群体数据分析
+- 个性化励志金句生成
+
+### 通义千问 VL 图像识别能力
+
+系统通过通义千问 VL 支持以下功能：
+
+- 兵工装备图片识别
+- 装备相关知识解释
+- 兵工案例联想推荐
+- “看图识装备、识装备学精神”的情境化学习
+
+## 安全设计
+
+项目已将 AI API Key 从前端代码中移除，改为通过 Vercel Serverless Functions 代理转发：
+
+- `/api/deepseek`
+- `/api/qwen-vl`
+
+API Key 统一存放在 Vercel 环境变量中：
+
+- `DEEPSEEK_API_KEY`
+- `DASHSCOPE_API_KEY`
+
+前端代码不直接暴露第三方模型 API Key。
+
+## 八维画像模型
+
+系统围绕学生思政成长状态设计八个分析维度：
+
+| 维度代码 | 维度名称 |
+| --- | --- |
+| PA | 专业认同度 |
+| MP | 使命感知度 |
+| VS | 价值定力 |
+| CC | 集体协同感 |
+| CT | 思辨开放度 |
+| SC | 报国信心 |
+| CD | 职业方向感 |
+| IR | 思政资源感知 |
+
+学生完成测评后，系统根据各维度得分生成画像类型，并推荐相匹配的兵工案例和学习路径。
+
+## 项目创新点
+
+1. 将兵工文化与高校思政教育结合，突出工科院校专业特色。
+2. 构建八维思政成长画像，实现学生个性化分析。
+3. 引入 AI 智能体“小备”，提供陪伴式、引导式学习体验。
+4. 支持兵工装备图片识别，增强思政学习的情境感和互动性。
+5. 形成学生端、教师端、学校端三端联动的数据闭环。
+6. 通过可视化图表辅助教师和学校开展学情研判。
+
+## 典型应用场景
+
+- 高校思政课程课前测评
+- 兵工文化主题教育
+- 国防教育实践活动
+- 辅导员学情研判
+- 学院学生成长数据分析
+- 易班平台智能体应用拓展
+
+## 本地运行
+
+安装依赖：
+
+```bash
+npm install
+```
+
+启动开发环境：
+
+```bash
+npm run dev
+```
+
+构建项目：
+
+```bash
+npm run build
+```
+
+预览构建结果：
+
+```bash
+npm run preview
+```
+
+## 环境变量配置
+
+部署到 Vercel 时，需要配置以下环境变量：
+
+```bash
+DEEPSEEK_API_KEY=你的 DeepSeek API Key
+DASHSCOPE_API_KEY=你的阿里云百炼 API Key
+```
+
+注意：不要将真实 API Key 写入前端代码或提交到 GitHub。
+
+## 当前版本说明
+
+当前版本为参赛演示原型，已完成核心交互流程和 AI 能力验证。教师端、学校端部分数据使用 localStorage 和模拟数据进行演示。后续正式推广版本可接入学校统一身份认证、学生数据库、易班平台接口和权限管理系统，实现真实多用户数据同步。
+
+## 参赛信息
+
+- 赛事名称：2026 年第七届辽宁省“中软国际—卓越杯”AI 挑战赛
+- 作品名称：兵工铸魂 · 智绘“易”学
+- 作品类别：智慧教育类
+- 项目方向：AI + 思政教育 + 兵工文化 + 学生成长画像
+
+## 项目愿景
+
+本项目希望通过人工智能技术提升高校思政教育的个性化、互动性和数据化水平，让学生在兵工故事、国防案例和智能引导中增强专业认同、使命意识和报国信心，探索具有兵工院校特色的智慧思政教育新模式。
