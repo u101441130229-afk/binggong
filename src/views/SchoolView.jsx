@@ -1,4 +1,4 @@
-// TODO: DeepSeek接入点
+// DeepSeek AI 代理调用
 import { useState, useEffect } from "react";
 import {
   blue, purple, cyan, green, yellow, red,
