@@ -61,7 +61,7 @@ function LoginPage({ onLogin }) {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          model: "qwen-vl-max-latest",
+          model: "qwen3.7-plus",
           messages: [{
             role: "user",
             content: [
@@ -382,7 +382,7 @@ function XiaoBeiFloat({ role }) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          model: "qwen-vl-max-latest",
+          model: "qwen3.7-plus",
           messages: [{ role: "user", content: [
             { type: "image_url", image_url: { url: `data:${mediaType};base64,${base64}` } },
             { type: "text", text: "请识别图片中的军事装备或国防相关内容，用中文描述（50字以内），并结合兵工精神给出一句简短点评。如不是军事装备，也请描述并尝试联系国防主题。" }
