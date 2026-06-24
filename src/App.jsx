@@ -10,6 +10,27 @@ import StudentView from "./views/StudentView.jsx";
 import TeacherView from "./views/TeacherView.jsx";
 import SchoolView from "./views/SchoolView.jsx";
 
+// 图片压缩 —— 减少上传体积，加快识别速度
+function compressImage(file, maxW = 1024, quality = 0.75) {
+  return new Promise(function(resolve, reject) {
+    const img = new Image();
+    img.onload = function() {
+      const scale = Math.min(1, maxW / Math.max(img.width, img.height));
+      const canvas = document.createElement("canvas");
+      canvas.width = Math.round(img.width * scale);
+      canvas.height = Math.round(img.height * scale);
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      canvas.toBlob(function(blob) {
+        if (blob) { resolve(blob); }
+        else { reject(new Error("Canvas toBlob failed")); }
+      }, "image/jpeg", quality);
+    };
+    img.onerror = reject;
+    img.src = URL.createObjectURL(file);
+  });
+}
+
 // ============================================================
 // LoginPage - 星空登录页
 // ============================================================
@@ -46,14 +67,15 @@ function LoginPage({ onLogin }) {
     setScanResult(null);
     setScanError(null);
     try {
-      // 转base64
+      // 压缩后再转base64，大幅减少上传体积
+      const compressed = await compressImage(file);
       const base64 = await new Promise(function(resolve, reject) {
         const reader = new FileReader();
         reader.onload = function(e) { resolve(e.target.result.split(",")[1]); };
         reader.onerror = reject;
-        reader.readAsDataURL(file);
+        reader.readAsDataURL(compressed);
       });
-      const mediaType = file.type || "image/jpeg";
+      const mediaType = "image/jpeg";
 
       const res = await fetch("/api/qwen-vl", {
         method: "POST",
@@ -371,13 +393,14 @@ function XiaoBeiFloat({ role }) {
     setImgScanning(true);
     setMessages(function(prev) { return [...prev, { role: "assistant", text: "📷 小备正在识别图片，请稍候…", id: Date.now(), isScanning: true }]; });
     try {
+      const compressed = await compressImage(file);
       const base64 = await new Promise(function(resolve, reject) {
         const reader = new FileReader();
         reader.onload = function(e) { resolve(e.target.result.split(",")[1]); };
         reader.onerror = reject;
-        reader.readAsDataURL(file);
+        reader.readAsDataURL(compressed);
       });
-      const mediaType = file.type || "image/jpeg";
+      const mediaType = "image/jpeg";
       const res = await fetch("/api/qwen-vl", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
