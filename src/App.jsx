@@ -9,6 +9,7 @@ import XiaoBei from "./components/XiaoBei.jsx";
 import StudentView from "./views/StudentView.jsx";
 import TeacherView from "./views/TeacherView.jsx";
 import SchoolView from "./views/SchoolView.jsx";
+import { Analytics } from "@vercel/analytics/react";
 
 // 图片压缩 —— 减少上传体积，加快识别速度
 function compressImage(file, maxW = 1024, quality = 0.75) {
@@ -648,6 +649,7 @@ export default function App() {
 
       {/* 全局悬浮小备 */}
       <XiaoBeiFloat role={role} />
+      <Analytics />
     </div>
   );
 }
