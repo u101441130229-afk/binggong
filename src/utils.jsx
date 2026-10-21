@@ -1,35 +1,32 @@
-// DeepSeek AI 代理调用
-import { useState, useEffect } from "react";
+// 兵工铸魂·智绘易学AI思政教学应用软件 V1.0
+// 淡入容器：keyProp 变化时重新播放一次轻微上浮的入场动画。
+import { useEffect, useState } from "react";
 
-// ====================== 打字机 Hook ======================
-export function useTyping(text, speed, trigger) {
-  const [displayed, setDisplayed] = useState("");
-  const [done, setDone] = useState(false);
-  useEffect(() => {
-    if (!trigger) { setDisplayed(""); setDone(false); return; }
-    setDisplayed(""); setDone(false);
-    let i = 0;
-    const id = setInterval(() => {
-      i++;
-      setDisplayed(text.slice(0, i));
-      if (i >= text.length) { clearInterval(id); setDone(true); }
-    }, speed || 12);
-    return () => clearInterval(id);
-  }, [trigger, text]);
-  return [displayed, done];
-}
-
-// ====================== FadeIn 动画容器 ======================
-export function FadeIn({ children, keyProp }) {
+function FadeInInner({ children }) {
   const [visible, setVisible] = useState(false);
+
   useEffect(function () {
-    setVisible(false);
-    const t = setTimeout(function () { setVisible(true); }, 20);
-    return function () { clearTimeout(t); };
-  }, [keyProp]);
+    const timer = setTimeout(function () {
+      setVisible(true);
+    }, 20);
+    return function () {
+      clearTimeout(timer);
+    };
+  }, []);
+
   return (
-    <div style={{ opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(6px)", transition: "opacity 0.28s ease, transform 0.28s ease" }}>
+    <div
+      style={{
+        opacity: visible ? 1 : 0,
+        transform: visible ? "translateY(0)" : "translateY(6px)",
+        transition: "opacity 0.28s ease, transform 0.28s ease",
+      }}
+    >
       {children}
     </div>
   );
+}
+
+export function FadeIn({ children, keyProp }) {
+  return <FadeInInner key={keyProp}>{children}</FadeInInner>;
 }

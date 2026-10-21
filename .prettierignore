@@ -1,0 +1,10 @@
+node_modules
+dist
+dist-ssr
+private
+report
+copyright/*.docx
+copyright/*.pdf
+public
+package-lock.json
+*.sql
