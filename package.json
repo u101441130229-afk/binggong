@@ -1,15 +1,26 @@
 {
-  "name": "bgzhapp",
+  "name": "bingong-zhuhun-zhihui-yixue",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "兵工铸魂·智绘易学AI思政教学应用软件 V1.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "preview": "vite preview",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "import:roster": "node scripts/import-roster.js",
+    "staff": "node scripts/create-staff.js",
+    "smoke": "node scripts/smoke-test.js",
+    "report": "node scripts/make-report.js",
+    "copyright": "node scripts/make-copyright-code.js",
+    "assets": "node scripts/optimize-assets.js"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.118.0",
+    "docx": "^9.13.0",
     "react": "^19.2.5",
     "react-dom": "^19.2.5"
   },
@@ -22,6 +33,8 @@
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.2",
     "globals": "^17.5.0",
+    "prettier": "^3.9.10",
+    "sharp": "^0.35.5",
     "vite": "^8.0.9"
   }
 }

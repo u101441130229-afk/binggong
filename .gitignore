@@ -12,6 +12,15 @@ dist
 dist-ssr
 *.local
 
+# 环境变量与私有名册（仅供本机使用，禁止提交）
+.env
+.env.*
+!.env.example
+private/
+
+# 含学生个人信息的导出文件，仅在本机生成
+report/名单数据.csv
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
