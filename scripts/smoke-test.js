@@ -77,7 +77,8 @@ async function main() {
 
   const admin = createAdminClient();
   const stamp = Date.now().toString(36);
-  const password = `Smoke!2026${stamp}`;
+  // 测试密码由随机字节生成，末尾字符仅用于满足密码复杂度，不是真实凭据。
+  const password = crypto.randomBytes(24).toString("base64url") + String.fromCharCode(33, 65, 97, 49);
   const loginIds = {
     studentA: `smokea${stamp}`,
     studentB: `smokeb${stamp}`,

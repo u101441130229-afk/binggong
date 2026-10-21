@@ -10,7 +10,11 @@ import { ROOT_DIR, loadEnvFile } from "./_env.js";
 import { callWithRetry, isAlreadyExists } from "./_retry.js";
 import { createAdminClient, listAllAuthUsers } from "./_supabase.js";
 
-const PASSWORD_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#%&*";
+const ALPHABET_UPPER = "ABCDEFGHJKLMNPQRSTUVWXYZ";
+const ALPHABET_LOWER = "abcdefghijkmnopqrstuvwxyz";
+const ALPHABET_DIGITS = "23456789";
+const ALPHABET_SYMBOLS = "!@#%&*";
+const PASSWORD_ALPHABET = ALPHABET_UPPER + ALPHABET_LOWER + ALPHABET_DIGITS + ALPHABET_SYMBOLS;
 const CREDENTIAL_FILE = path.join(ROOT_DIR, "private", "账号密码.txt");
 const ROLE_LABELS = { teacher: "教师", admin: "管理员" };
 
