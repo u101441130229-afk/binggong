@@ -2,7 +2,7 @@ node_modules
 dist
 dist-ssr
 private
-report/名单数据.csv
+report
 copyright/*.docx
 copyright/*.pdf
 public
