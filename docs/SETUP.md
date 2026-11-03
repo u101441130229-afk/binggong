@@ -34,8 +34,8 @@
 | `VITE_SUPABASE_ANON_KEY`    | 与 `SUPABASE_ANON_KEY` 相同                                              |
 | `DEEPSEEK_API_KEY`          | DeepSeek 密钥                                                            |
 | `DEEPSEEK_MODEL`            | 文本模型名称，默认 `deepseek-flash`                                      |
-| `DASHSCOPE_API_KEY`         | 通义千问密钥                                                             |
-| `QWEN_VL_MODEL`             | 视觉模型名称，默认 `qwen3.7-plus`                                        |
+| `MOONSHOT_API_KEY`          | Kimi密钥                                                                 |
+| `KIMI_VL_MODEL`             | 视觉模型名称，默认 `kimi-k2.5`                                           |
 
 `.env.local` 已被 `.gitignore` 忽略，不会上传到 GitHub。不要把 `service_role` 或 AI 密钥写进前端代码、`VITE_` 变量或任何提交文件。
 
@@ -75,14 +75,14 @@ SUPABASE_SERVICE_ROLE_KEY
 VITE_SUPABASE_URL
 VITE_SUPABASE_ANON_KEY
 DEEPSEEK_MODEL
-QWEN_VL_MODEL
+KIMI_VL_MODEL
 ```
 
 粘贴后确认 **Production** 与 **Preview** 都已勾选，点击 **Save**。如果项目此前没有配置 AI 密钥，请另外添加：
 
 ```text
 DEEPSEEK_API_KEY
-DASHSCOPE_API_KEY
+MOONSHOT_API_KEY
 ```
 
 修改环境变量后必须重新部署（**Deployments → 最新部署 → Redeploy**）才会生效。
@@ -145,3 +145,22 @@ npm run report
 - `api/_lib/`：Vercel 函数端的令牌校验、限频、请求校验与数据库客户端。
 
 同时需要替换 `supabase/migrations/` 中的建表脚本与 `.env.local` 中的数据库连接配置，并保留 `src/api/loginId.js` 的登录名映射规则。页面与业务组件只调用 `src/api/` 暴露的函数，不直接依赖 Supabase。
+
+## Kimi 图片识别迁移（2026-11-03）
+
+已有项目只需在 Vercel → Settings → Environment Variables 添加：
+
+| 变量               | 值                                                     |
+| ------------------ | ------------------------------------------------------ |
+| `MOONSHOT_API_KEY` | Kimi 中国区开放平台创建的真实密钥（不要提交到 GitHub） |
+| `KIMI_VL_MODEL`    | `kimi-k2.5`                                            |
+
+选择 Production 和 Preview，保存后重新部署。模型未配置时默认使用 `kimi-k2.5`。接口使用 `https://api.moonshot.cn/v1/chat/completions`，需要中国区开放平台的密钥，不能使用 Kimi Code 会员密钥或海外区密钥。
+
+新前端调用 `/api/kimi-vl`；旧 `/api/qwen-vl` 仅为已缓存页面提供兼容入口，同样调用 Kimi。服务端明确关闭思考模式，避免短回答的 token 预算被推理占用。模型、温度、思考模式均由服务端固定。
+
+`DASHSCOPE_API_KEY` 和 `QWEN_VL_MODEL` 不再被读取，切换成功后可从部署配置删除。DeepSeek 的两个环境变量保持原值。无需重跑数据库初始化。数据库的 `ai_qwen` 只作为旧版表约束的兼容存储编码，Kimi 识别也记录到这一类别；页面以“图像识别调用”统一展示历史与新记录。历史部署设计文档是归档资料，不代表当前供应商。
+
+验证顺序：先运行 `npm test`（离线接口回归），再运行 `npm run lint`、`npm run build`。`npm run smoke` 还需要 Supabase 配置，会创建并清理测试账号，AI 上游使用模拟响应。最后在 Preview 中用学生账号实际上传图片，确认返回描述、教师端统计增加；教师/管理员不能调用视觉接口。真实 Kimi 调用会产生费用，离线测试不证明密钥余额或线上连通性。
+
+本次没有自动重生成已归档的 `copyright/源代码文档.docx`；如软著材料需反映新版代码，完成部署验收后运行 `npm run copyright` 重新导出。

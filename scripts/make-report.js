@@ -184,7 +184,7 @@ function buildActivitySection(activities) {
         ["案例学习", String(counts.case_study)],
         ["每日问题", String(counts.daily_question)],
         ["DeepSeek 文本 AI 调用", String(counts.ai_deepseek)],
-        ["千问视觉 AI 调用", String(counts.ai_qwen)],
+        ["图像识别 AI 调用（含历史记录）", String(counts.ai_kimi)],
         ["合计", String(counts.total)],
       ]
     ),

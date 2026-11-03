@@ -7,7 +7,7 @@
 - 前端：React 19、Vite 8、原生 CSS 与 SVG 图表
 - 登录与数据：Supabase Auth、PostgreSQL、行级安全（RLS）
 - 服务端接口：Vercel Serverless Functions（`api/`）
-- AI 文本：DeepSeek；AI 图像识别：通义千问 VL
+- AI 文本：DeepSeek；AI 图像识别：Kimi
 - 部署：Vercel，前端与接口同域
 
 浏览器只能拿到公开密钥；`service_role`、AI 服务密钥只存在于本地 `.env.local` 与 Vercel 环境变量。
@@ -49,8 +49,8 @@ npm run preview
 | `VITE_SUPABASE_ANON_KEY`    | 前端构建时注入的公开密钥                 |
 | `DEEPSEEK_API_KEY`          | DeepSeek 接口密钥                        |
 | `DEEPSEEK_MODEL`            | 服务端固定的文本模型                     |
-| `DASHSCOPE_API_KEY`         | 通义千问接口密钥                         |
-| `QWEN_VL_MODEL`             | 服务端固定的视觉模型                     |
+| `MOONSHOT_API_KEY`          | Kimi接口密钥                             |
+| `KIMI_VL_MODEL`             | 服务端固定的视觉模型                     |
 
 ## 数据库与脚本
 
@@ -93,3 +93,5 @@ copyright/         软件说明书与源代码文档
 
 当前版本：V1.0  
 软件全称：兵工铸魂·智绘易学AI思政教学应用软件
+
+图片识别已迁移至 Kimi 开放平台，部署步骤见 [Kimi 迁移说明](docs/SETUP.md#kimi-图片识别迁移2026-11-03)。历史数据库编码和旧路由仅为兼容保留。

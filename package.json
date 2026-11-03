@@ -16,7 +16,8 @@
     "smoke": "node scripts/smoke-test.js",
     "report": "node scripts/make-report.js",
     "copyright": "node scripts/make-copyright-code.js",
-    "assets": "node scripts/optimize-assets.js"
+    "assets": "node scripts/optimize-assets.js",
+    "test": "node --experimental-vm-modules --test scripts/kimi.test.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.118.0",

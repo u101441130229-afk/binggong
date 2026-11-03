@@ -46,14 +46,14 @@ async function signIn(loginId, password) {
 }
 
 function installUpstreamStub() {
-  const captured = { deepseek: [], qwen: [], mode: "ok" };
+  const captured = { deepseek: [], kimi: [], mode: "ok" };
   originalFetch = globalThis.fetch;
   globalThis.fetch = async function (input, init) {
     const url = typeof input === "string" ? input : input.url;
     const isDeepseek = url.includes("api.deepseek.com");
-    const isQwen = url.includes("dashscope.aliyuncs.com");
-    if (!isDeepseek && !isQwen) return originalFetch(input, init);
-    captured[isDeepseek ? "deepseek" : "qwen"].push(JSON.parse(init.body));
+    const isKimi = url.includes("api.moonshot.cn");
+    if (!isDeepseek && !isKimi) return originalFetch(input, init);
+    captured[isDeepseek ? "deepseek" : "kimi"].push(JSON.parse(init.body));
     if (captured.mode === "fail") {
       return new Response(JSON.stringify({ error: { message: "SECRET_UPSTREAM_DETAIL" } }), {
         status: 500,
@@ -71,9 +71,9 @@ function installUpstreamStub() {
 async function main() {
   loadEnvFile();
   process.env.DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY || "smoke-test-key";
-  process.env.DASHSCOPE_API_KEY = process.env.DASHSCOPE_API_KEY || "smoke-test-key";
+  process.env.MOONSHOT_API_KEY = process.env.MOONSHOT_API_KEY || "smoke-test-key";
   process.env.DEEPSEEK_MODEL = process.env.DEEPSEEK_MODEL || "deepseek-flash";
-  process.env.QWEN_VL_MODEL = process.env.QWEN_VL_MODEL || "qwen3.7-plus";
+  process.env.KIMI_VL_MODEL = process.env.KIMI_VL_MODEL || "kimi-k2.5";
 
   const admin = createAdminClient();
   const stamp = Date.now().toString(36);

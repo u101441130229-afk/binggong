@@ -7,7 +7,7 @@ export const EVENT_LABELS = {
   case_study: "案例学习",
   daily_question: "每日问题",
   ai_deepseek: "DeepSeek 调用",
-  ai_qwen: "千问 VL 调用",
+  ai_qwen: "图像识别调用",
 };
 
 export function formatDateTime(value) {
@@ -97,11 +97,13 @@ export function buildStudentRecords(profiles, assessments, activities) {
 }
 
 export function summarizeActivityCounts(activities) {
-  const counts = { case_study: 0, daily_question: 0, ai_deepseek: 0, ai_qwen: 0 };
+  const counts = { case_study: 0, daily_question: 0, ai_deepseek: 0, ai_kimi: 0 };
   activities.forEach(function (row) {
-    if (counts[row.event_type] !== undefined) counts[row.event_type] += 1;
+    // Preserve historical storage IDs while exposing a provider-current summary field.
+    const eventType = row.event_type === "ai_qwen" ? "ai_kimi" : row.event_type;
+    if (counts[eventType] !== undefined) counts[eventType] += 1;
   });
-  counts.total = counts.case_study + counts.daily_question + counts.ai_deepseek + counts.ai_qwen;
+  counts.total = counts.case_study + counts.daily_question + counts.ai_deepseek + counts.ai_kimi;
   return counts;
 }
 
