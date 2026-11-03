@@ -67,12 +67,14 @@ export default async function handler(req, res) {
       }),
       signal: AbortSignal.timeout(30000),
     });
-  } catch {
+  } catch (error) {
+    console.warn("Kimi vision transport failure", { model, timeout: error?.name === "TimeoutError" });
     await logAiActivity(admin, auth.profile.id, "ai_qwen", false);
     return res.status(502).json({ error: "ai_service_unavailable" });
   }
 
   if (!upstream.ok) {
+    console.warn("Kimi vision upstream rejected request", { model, status: upstream.status });
     await logAiActivity(admin, auth.profile.id, "ai_qwen", false);
     return res.status(502).json({ error: "ai_service_unavailable" });
   }
