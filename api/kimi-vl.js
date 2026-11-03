@@ -3,12 +3,18 @@
 
 import { getAdminClient } from "./_lib/supabaseAdmin.js";
 import { authenticateRequest } from "./_lib/authGuard.js";
-import { validateVisionPayload, KIMI_TEMPERATURE } from "./_lib/validation.js";
+import { validateVisionPayload } from "./_lib/validation.js";
 import { checkRateLimit, logAiActivity } from "./_lib/rateLimit.js";
 
 // ai_qwen is a legacy database identifier retained for existing CHECK constraints and history.
 // The provider is exclusively Kimi; no Alibaba API or key is used.
 const UPSTREAM_URL = "https://api.moonshot.cn/v1/chat/completions";
+// K2.5 was retired on 2026-08-31; K3.1 Pro is the current vision-capable flagship.
+const DEFAULT_MODEL = "kimi-k3.1-pro";
+const RETIRED_VISION_MODELS = new Set(["kimi-k2.5"]);
+// K3 always reasons, so leave room for low-effort reasoning plus the short answer.
+const MAX_COMPLETION_TOKENS = 1024;
+const UPSTREAM_TIMEOUT_MS = 50000;
 
 export const config = {
   api: {
@@ -16,6 +22,7 @@ export const config = {
       sizeLimit: "7mb",
     },
   },
+  maxDuration: 60,
 };
 
 export default async function handler(req, res) {
@@ -25,7 +32,11 @@ export default async function handler(req, res) {
   }
 
   const apiKey = process.env.MOONSHOT_API_KEY;
-  const model = process.env.KIMI_VL_MODEL || "kimi-k2.5";
+  const configuredModel = process.env.KIMI_VL_MODEL;
+  const model = configuredModel && !RETIRED_VISION_MODELS.has(configuredModel) ? configuredModel : DEFAULT_MODEL;
+  if (configuredModel && model !== configuredModel) {
+    console.warn("KIMI_VL_MODEL is retired; using current default", { configuredModel, model });
+  }
   const admin = getAdminClient();
   if (!apiKey || !model || !admin) {
     return res.status(503).json({ error: "service_unavailable" });
@@ -60,12 +71,12 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         model,
         messages: payload.messages,
-        max_tokens: payload.maxTokens,
-        temperature: KIMI_TEMPERATURE,
-        thinking: { type: "disabled" },
+        // K3 always reasons and rejects the K2-only temperature/thinking fields.
+        max_completion_tokens: MAX_COMPLETION_TOKENS,
+        reasoning_effort: "low",
         stream: false,
       }),
-      signal: AbortSignal.timeout(30000),
+      signal: AbortSignal.timeout(UPSTREAM_TIMEOUT_MS),
     });
   } catch (error) {
     console.warn("Kimi vision transport failure", { model, timeout: error?.name === "TimeoutError" });

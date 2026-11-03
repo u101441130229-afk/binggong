@@ -35,7 +35,7 @@
 | `DEEPSEEK_API_KEY`          | DeepSeek 密钥                                                            |
 | `DEEPSEEK_MODEL`            | 文本模型名称，默认 `deepseek-flash`                                      |
 | `MOONSHOT_API_KEY`          | Kimi密钥                                                                 |
-| `KIMI_VL_MODEL`             | 视觉模型名称，默认 `kimi-k2.5`                                           |
+| `KIMI_VL_MODEL`             | 视觉模型名称，默认 `kimi-k3.1-pro`                                       |
 
 `.env.local` 已被 `.gitignore` 忽略，不会上传到 GitHub。不要把 `service_role` 或 AI 密钥写进前端代码、`VITE_` 变量或任何提交文件。
 
@@ -153,11 +153,11 @@ npm run report
 | 变量               | 值                                                     |
 | ------------------ | ------------------------------------------------------ |
 | `MOONSHOT_API_KEY` | Kimi 中国区开放平台创建的真实密钥（不要提交到 GitHub） |
-| `KIMI_VL_MODEL`    | `kimi-k2.5`                                            |
+| `KIMI_VL_MODEL`    | `kimi-k3.1-pro`                                        |
 
-选择 Production 和 Preview，保存后重新部署。模型未配置时默认使用 `kimi-k2.5`。接口使用 `https://api.moonshot.cn/v1/chat/completions`，需要中国区开放平台的密钥，不能使用 Kimi Code 会员密钥或海外区密钥。
+选择 Production 和 Preview，保存后重新部署。模型未配置时默认使用 `kimi-k3.1-pro`。接口使用 `https://api.moonshot.cn/v1/chat/completions`，需要中国区开放平台的密钥，不能使用 Kimi Code 会员密钥或海外区密钥。
 
-新前端调用 `/api/kimi-vl`；旧 `/api/qwen-vl` 仅为已缓存页面提供兼容入口，同样调用 Kimi。服务端明确关闭思考模式，避免短回答的 token 预算被推理占用。模型、温度、思考模式均由服务端固定。
+新前端调用 `/api/kimi-vl`；旧 `/api/qwen-vl` 仅为已缓存页面提供兼容入口，同样调用 Kimi。K2.5 已于 2026-08-31 全平台下线，当前使用 `kimi-k3.1-pro`；K3 系列只接受 `max_completion_tokens` 与 `reasoning_effort`，传入 `temperature` 或 `thinking` 会直接报错。服务端固定 `reasoning_effort=low`，并限制输出为 1024 tokens，兼顾响应速度与费用。若环境变量仍写着已下线的 `kimi-k2.5`，服务端会记录警告并自动回退到 `kimi-k3.1-pro`，但仍建议把环境变量改到当前模型。
 
 `DASHSCOPE_API_KEY` 和 `QWEN_VL_MODEL` 不再被读取，切换成功后可从部署配置删除。DeepSeek 的两个环境变量保持原值。无需重跑数据库初始化。数据库的 `ai_qwen` 只作为旧版表约束的兼容存储编码，Kimi 识别也记录到这一类别；页面以“图像识别调用”统一展示历史与新记录。历史部署设计文档是归档资料，不代表当前供应商。
 

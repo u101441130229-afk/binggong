@@ -73,7 +73,7 @@ async function main() {
   process.env.DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY || "smoke-test-key";
   process.env.MOONSHOT_API_KEY = process.env.MOONSHOT_API_KEY || "smoke-test-key";
   process.env.DEEPSEEK_MODEL = process.env.DEEPSEEK_MODEL || "deepseek-flash";
-  process.env.KIMI_VL_MODEL = process.env.KIMI_VL_MODEL || "kimi-k2.5";
+  process.env.KIMI_VL_MODEL = process.env.KIMI_VL_MODEL || "kimi-k3.1-pro";
 
   const admin = createAdminClient();
   const stamp = Date.now().toString(36);

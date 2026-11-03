@@ -65,9 +65,10 @@ export async function runAiTests(admin, contexts, captured) {
     assert(response.statusCode === 200, `状态码为 ${response.statusCode}`);
     const sent = captured.kimi[0];
     assert(sent.model === process.env.KIMI_VL_MODEL, "视觉模型未被服务端固定");
-    assert(sent.temperature === 0.6, "视觉温度未被服务端固定");
-    assert(sent.thinking?.type === "disabled", "Kimi 未固定为即时模式");
-    assert(sent.max_tokens === 600, "视觉 max_tokens 未被限制为 600");
+    assert(sent.reasoning_effort === "low", "Kimi 推理强度未被服务端固定");
+    assert(sent.max_completion_tokens === 1024, "视觉输出上限未被限制为 1024");
+    assert(sent.temperature === undefined, "K3 不应收到 temperature");
+    assert(sent.thinking === undefined, "K3 不应收到 thinking");
   });
 
   await test("教师与管理员调用视觉 AI 返回 403", async function () {

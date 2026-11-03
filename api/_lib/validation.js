@@ -9,7 +9,6 @@ const MAX_VISION_BYTES = 6 * 1024 * 1024;
 const IMAGE_DATA_URL = /^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+/=\s]+$/;
 
 export const DEEPSEEK_TEMPERATURE = 0.7;
-export const KIMI_TEMPERATURE = 0.6;
 
 function clampMaxTokens(value, fallback) {
   const parsed = Number(value);

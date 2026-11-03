@@ -57,7 +57,7 @@ async function fixture(options = {}) {
   async function load(path) {
     if (modules.has(path)) return modules.get(path);
     let module;
-    if (path.endsWith("/supabaseAdmin.js")) {
+    if (path.replace(/\\/g, "/").endsWith("/supabaseAdmin.js")) {
       module = new SyntheticModule(["getAdminClient"], function () {
         this.setExport("getAdminClient", () => admin);
       });
@@ -79,7 +79,7 @@ async function fixture(options = {}) {
   const module = await load(entry);
   await module.evaluate();
   process.env.MOONSHOT_API_KEY = "test-only-moonshot-key";
-  process.env.KIMI_VL_MODEL = "kimi-k2.5";
+  process.env.KIMI_VL_MODEL = options.modelEnv || "kimi-k3.1-pro";
   delete process.env.DASHSCOPE_API_KEY;
   delete process.env.QWEN_VL_MODEL;
   if (options.noKey) delete process.env.MOONSHOT_API_KEY;
@@ -121,7 +121,7 @@ async function fixture(options = {}) {
   return { res, calls, logs, filters };
 }
 
-test("Kimi receives image, fixed credentials/model, instant mode and bounded tokens", async () => {
+test("Kimi receives image, fixed credentials/model and bounded completion tokens", async () => {
   const { res, calls, logs } = await fixture({
     body: { ...body, model: "attacker", temperature: 2, thinking: { type: "enabled" }, max_tokens: 999999 },
   });
@@ -129,10 +129,12 @@ test("Kimi receives image, fixed credentials/model, instant mode and bounded tok
   assert.equal(calls.length, 1);
   assert.equal(calls[0].url, "https://api.moonshot.cn/v1/chat/completions");
   assert.equal(calls[0].headers.Authorization, "Bearer test-only-moonshot-key");
-  assert.equal(calls[0].body.model, "kimi-k2.5");
-  assert.deepEqual(calls[0].body.thinking, { type: "disabled" });
-  assert.equal(calls[0].body.temperature, 0.6);
-  assert.equal(calls[0].body.max_tokens, 600);
+  assert.equal(calls[0].body.model, "kimi-k3.1-pro");
+  assert.equal(calls[0].body.reasoning_effort, "low");
+  assert.equal(calls[0].body.max_completion_tokens, 1024);
+  assert.equal(calls[0].body.temperature, undefined);
+  assert.equal(calls[0].body.thinking, undefined);
+  assert.equal(calls[0].body.max_tokens, undefined);
   assert.equal(calls[0].body.messages[0].content[0].image_url.url, image);
   assert.equal(res.body.choices[0].message.content, "图片识别成功");
   assert.deepEqual(logs, [{ user_id: "student-1", event_type: "ai_qwen", success: true }]);
@@ -142,7 +144,14 @@ test("legacy route forwards to Kimi and retains small output budget", async () =
   const { res, calls } = await fixture({ legacy: true });
   assert.equal(res.statusCode, 200);
   assert.equal(calls[0].url, "https://api.moonshot.cn/v1/chat/completions");
-  assert.equal(calls[0].body.max_tokens, 200);
+  assert.equal(calls[0].body.model, "kimi-k3.1-pro");
+  assert.equal(calls[0].body.max_completion_tokens, 1024);
+});
+
+test("retired KIMI_VL_MODEL falls back to the current model", async () => {
+  const { res, calls } = await fixture({ modelEnv: "kimi-k2.5" });
+  assert.equal(res.statusCode, 200);
+  assert.equal(calls[0].body.model, "kimi-k3.1-pro");
 });
 
 for (const [name, options, status] of [
