@@ -1,7 +1,7 @@
 // 兵工铸魂·智绘易学AI思政教学应用软件 V1.0
 // 冒烟测试 AI 代理用例：鉴权、角色限制、参数固定、限频与错误脱敏。
 import deepseekHandler from "../api/deepseek.js";
-import qwenHandler from "../api/qwen-vl.js";
+import kimiHandler from "../api/kimi-vl.js";
 import { assert, callHandler, test } from "./_smoke-helpers.js";
 
 export async function runAiTests(admin, contexts, captured) {
@@ -15,7 +15,7 @@ export async function runAiTests(admin, contexts, captured) {
   });
 
   await test("未登录调用视觉 AI 返回 401", async function () {
-    const response = await callHandler(qwenHandler, null, {
+    const response = await callHandler(kimiHandler, null, {
       messages: [{ role: "user", content: [{ type: "text", text: "识别" }] }],
     });
     assert(response.statusCode === 401, `状态码为 ${response.statusCode}`);
@@ -48,7 +48,7 @@ export async function runAiTests(admin, contexts, captured) {
   });
 
   await test("学生可以使用视觉识别且模型与温度由服务端固定", async function () {
-    const response = await callHandler(qwenHandler, studentA.token, {
+    const response = await callHandler(kimiHandler, studentA.token, {
       messages: [
         {
           role: "user",
@@ -63,14 +63,16 @@ export async function runAiTests(admin, contexts, captured) {
       max_tokens: 999999,
     });
     assert(response.statusCode === 200, `状态码为 ${response.statusCode}`);
-    const sent = captured.qwen[0];
-    assert(sent.model === process.env.QWEN_VL_MODEL, "视觉模型未被服务端固定");
-    assert(sent.temperature === 0.6, "视觉温度未被服务端固定");
-    assert(sent.max_tokens === 600, "视觉 max_tokens 未被限制为 600");
+    const sent = captured.kimi[0];
+    assert(sent.model === process.env.KIMI_VL_MODEL, "视觉模型未被服务端固定");
+    assert(sent.reasoning_effort === "low", "Kimi 推理强度未被服务端固定");
+    assert(sent.max_completion_tokens === 1024, "视觉输出上限未被限制为 1024");
+    assert(sent.temperature === undefined, "K3 不应收到 temperature");
+    assert(sent.thinking === undefined, "K3 不应收到 thinking");
   });
 
   await test("教师与管理员调用视觉 AI 返回 403", async function () {
-    const teacherResponse = await callHandler(qwenHandler, teacher.token, {
+    const teacherResponse = await callHandler(kimiHandler, teacher.token, {
       messages: [
         {
           role: "user",
@@ -80,7 +82,7 @@ export async function runAiTests(admin, contexts, captured) {
       role: "student",
     });
     assert(teacherResponse.statusCode === 403, `教师状态码为 ${teacherResponse.statusCode}`);
-    const adminResponse = await callHandler(qwenHandler, adminUser.token, {
+    const adminResponse = await callHandler(kimiHandler, adminUser.token, {
       messages: [
         {
           role: "user",
@@ -92,7 +94,7 @@ export async function runAiTests(admin, contexts, captured) {
   });
 
   await test("图片类型不在白名单时返回 400", async function () {
-    const response = await callHandler(qwenHandler, studentA.token, {
+    const response = await callHandler(kimiHandler, studentA.token, {
       messages: [
         {
           role: "user",

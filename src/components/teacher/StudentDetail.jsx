@@ -222,7 +222,7 @@ export default function StudentDetail({ student, classRecords, advice, adviceLoa
           { label: "每日问题", value: student.activityCounts.daily_question, color: yellow },
           {
             label: "AI 对话",
-            value: student.activityCounts.ai_deepseek + student.activityCounts.ai_qwen,
+            value: student.activityCounts.ai_deepseek + student.activityCounts.ai_kimi,
             color: purple,
           },
         ].map(function (metric) {

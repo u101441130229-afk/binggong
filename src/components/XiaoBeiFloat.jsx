@@ -57,7 +57,7 @@ export default function XiaoBeiFloat({ role }) {
     try {
       const compressed = await compressImage(file);
       const base64 = await blobToBase64(compressed);
-      const data = await requestAi("/api/qwen-vl", {
+      const data = await requestAi("/api/kimi-vl", {
         messages: [
           {
             role: "user",

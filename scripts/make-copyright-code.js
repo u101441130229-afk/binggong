@@ -126,7 +126,7 @@ function verifyNoPrivateData(text) {
     process.env.SUPABASE_SERVICE_ROLE_KEY,
     process.env.SUPABASE_ANON_KEY,
     process.env.DEEPSEEK_API_KEY,
-    process.env.DASHSCOPE_API_KEY,
+    process.env.MOONSHOT_API_KEY,
   ].filter(function (value) {
     return typeof value === "string" && value.length >= 20;
   });
