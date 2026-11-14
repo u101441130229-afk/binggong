@@ -50,6 +50,8 @@ export default async function handler(req, res) {
         max_tokens: payload.maxTokens,
         temperature: DEEPSEEK_TEMPERATURE,
         stream: false,
+        // 短文本任务关闭思考模式：避免 reasoning 占用输出预算导致正文为空。
+        thinking: { type: "disabled" },
       }),
       signal: AbortSignal.timeout(30000),
     });
